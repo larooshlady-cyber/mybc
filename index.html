@@ -930,38 +930,23 @@
 
   /* ══════ WINNERS TICKER ══════ */
   .winners-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 16px;
+    padding: 10px 0;
     margin: 12px 16px 0;
     background: rgba(255,255,255,0.03);
     border: 1px solid var(--border-component);
     border-radius: var(--radius-md);
     overflow: hidden;
   }
-  .winners-label {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    color: var(--green);
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .winners-label::before {
-    content: '';
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: var(--green);
-  }
+  .winners-label { display: none; }
   .winners-scroll {
     display: flex;
     gap: 8px;
-    overflow-x: auto;
-    flex: 1;
+    width: max-content;
+    animation: ticker-scroll 20s linear infinite;
+  }
+  @keyframes ticker-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
   }
   .winner-chip {
     flex-shrink: 0;
@@ -1487,14 +1472,10 @@
   .coin-option {
     flex: 1;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 6px;
+    justify-content: center;
     padding: 10px 0;
-    text-align: center;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text-dim);
+    font-size: 0;
     background: rgba(255,255,255,0.04);
     border: 1px solid var(--border-component);
     border-radius: var(--radius-sm);
@@ -1853,8 +1834,12 @@
 
 <!-- ══ Winners Ticker ══ -->
 <div class="winners-bar">
-  <div class="winners-label">Live Wins</div>
   <div class="winners-scroll">
+    <div class="winner-chip"><div class="winner-avatar">A</div><span class="winner-name">Alex</span><span class="winner-amount">+$1,230</span></div>
+    <div class="winner-chip"><div class="winner-avatar">M</div><span class="winner-name">Maria</span><span class="winner-amount">+$450</span></div>
+    <div class="winner-chip"><div class="winner-avatar">J</div><span class="winner-name">Jake</span><span class="winner-amount">+$8,900</span></div>
+    <div class="winner-chip"><div class="winner-avatar">S</div><span class="winner-name">Sara</span><span class="winner-amount">+$2,100</span></div>
+    <div class="winner-chip"><div class="winner-avatar">D</div><span class="winner-name">David</span><span class="winner-amount">+$670</span></div>
     <div class="winner-chip"><div class="winner-avatar">A</div><span class="winner-name">Alex</span><span class="winner-amount">+$1,230</span></div>
     <div class="winner-chip"><div class="winner-avatar">M</div><span class="winner-name">Maria</span><span class="winner-amount">+$450</span></div>
     <div class="winner-chip"><div class="winner-avatar">J</div><span class="winner-name">Jake</span><span class="winner-amount">+$8,900</span></div>
