@@ -1,0 +1,3059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>MYBC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  * { -webkit-tap-highlight-color: transparent; }
+  ::-webkit-scrollbar { display: none; }
+  * { scrollbar-width: none; }
+
+  :root {
+    --bg-base: #09071a;
+    --bg-card: #110e24;
+    --bg-surface: rgba(18,15,38,0.9);
+    --yellow: #FBCE04;
+    --green: #0ECC68;
+    --red: #ef4060;
+    --purple: #9b7aff;
+    --sky: #38bdf8;
+    --orange: #ff6b35;
+    --white: #f0edf8;
+    --text-sec: #b0aac6;
+    --text-dim: #7d7898;
+    --border: rgba(255,255,255,0.06);
+    --border-component: rgba(255,255,255,0.08);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-full: 50px;
+    --card-radius: var(--radius-md);
+  }
+
+  html, body { background: var(--bg-base); }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    color: var(--white);
+    max-width: 430px;
+    margin: 0 auto;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    padding-bottom: 80px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ══════ HEADER ══════ */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 201;
+    background: var(--bg-base);
+  }
+
+  .logo {
+    background: var(--yellow);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    font-weight: 900;
+    font-size: 14px;
+    color: #000;
+    letter-spacing: 1.2px;
+  }
+
+  .header-right { display: flex; align-items: center; gap: 8px; }
+
+  .h-btn {
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-sm);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border-component);
+    color: var(--text-sec);
+    transition: background 0.15s ease;
+  }
+  .h-btn:active { background: rgba(255,255,255,0.08); }
+
+  .wallet-btn {
+    display: flex; align-items: center;
+    height: 36px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border-component);
+    border-radius: var(--radius-md);
+    transition: transform 0.15s ease;
+    padding: 4px;
+  }
+
+  .wallet-coin { width: 28px; height: 28px; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
+  .wallet-coin img { border-radius: 50%; display: block; }
+  .wallet-amount { font-size: 13px; font-weight: 700; padding: 0 8px; letter-spacing: 0.2px; }
+
+  .add-btn {
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-sm);
+    background: var(--green);
+    flex-shrink: 0;
+  }
+  .add-btn svg { width: 14px; height: 14px; }
+
+  /* ══════ HERO BANNER ══════ */
+  .hero-banner {
+    margin: 16px;
+    border-radius: var(--radius-lg);
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #1a1540 0%, #0f0d24 100%);
+    border: 1px solid rgba(251,206,4,0.08);
+  }
+  .hero-banner::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: rgba(251,206,4,0.04);
+  }
+  .hero-banner::after {
+    content: '';
+    position: absolute;
+    bottom: -20px; left: -20px;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: rgba(251,206,4,0.03);
+  }
+
+  .hero-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 20px 20px 0;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--yellow);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    background: rgba(251,206,4,0.08);
+    padding: 5px 10px;
+    border-radius: var(--radius-full);
+  }
+  .hero-tag-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--green);
+  }
+  .hero-step-badge {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-sec);
+    background: rgba(255,255,255,0.06);
+    padding: 5px 12px;
+    border-radius: var(--radius-full);
+  }
+  .hero-step-badge span {
+    color: var(--yellow);
+    font-weight: 800;
+  }
+
+  .hero-body {
+    padding: 16px 20px 0;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-amount {
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1;
+    letter-spacing: -1.5px;
+    margin-bottom: 4px;
+  }
+  .hero-amount span {
+    color: var(--yellow);
+  }
+  .hero-desc {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-sec);
+    margin-bottom: 2px;
+  }
+  .hero-desc-highlight {
+    color: var(--yellow);
+    font-weight: 700;
+  }
+  .hero-sub {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  .hero-progress-section {
+    padding: 16px 20px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-progress-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .hero-progress-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-dim);
+  }
+  .hero-progress-label strong {
+    color: var(--white);
+  }
+  .hero-next-icon {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: rgba(251,206,4,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .hero-track {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .hero-fill {
+    height: 100%;
+    width: 40%;
+    background: var(--yellow);
+    border-radius: 3px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 10px;
+    padding: 0 20px 20px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-cta {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 0;
+    border-radius: var(--radius-md);
+    background: var(--yellow);
+    color: #000;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.15s;
+  }
+  .hero-cta:active { transform: scale(0.97); }
+  .hero-cta-sec {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    border-radius: var(--radius-md);
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border-component);
+    cursor: pointer;
+    color: var(--text-sec);
+    flex-shrink: 0;
+  }
+
+  .dots { display: flex; justify-content: center; gap: 6px; margin-bottom: 12px; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.12); }
+  .dot.active { width: 20px; border-radius: 3px; background: var(--yellow); }
+
+  /* ══════ STICKY NAV ══════ */
+  .sticky-nav {
+    /* non-sticky wrapper for providers + filters */
+  }
+
+  .tabs-scroll-wrap {
+    position: sticky;
+    top: 54px;
+    z-index: 195;
+    background: var(--bg-base);
+  }
+  .tabs-scroll {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 0;
+    padding: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .tabs-scroll-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 48px;
+    height: 100%;
+    background: linear-gradient(to right, transparent, var(--bg-base));
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .tab {
+    flex-shrink: 0;
+    padding: 24px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dim);
+    white-space: nowrap;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s ease, background 0.2s ease;
+    border-radius: 0;
+    background: transparent;
+    border: none;
+  }
+  .tab.active {
+    color: var(--white);
+    font-weight: 700;
+    background: linear-gradient(to top, rgba(251,206,4,0.06) 0%, transparent 100%);
+  }
+  .tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--yellow);
+  }
+  .tab .t-icon { display: flex; align-items: center; opacity: 0.4; }
+  .tab.active .t-icon { opacity: 1; color: var(--yellow); }
+
+  /* Provider bar */
+  .prov-bar {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .prov-search {
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    color: var(--text-dim);
+    border-right: 1px solid var(--border);
+  }
+  .prov-logos {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow-x: auto;
+    padding: 8px;
+    flex: 1;
+  }
+  .prov-logo {
+    flex-shrink: 0;
+    padding: 0 8px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+  }
+  .prov-logo img { height: 16px; width: auto; opacity: 0.5; }
+
+  /* Filter pills */
+  .filters { display: flex; gap: 8px; padding: 12px 16px; overflow-x: auto; }
+  .pill {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border-component);
+    border-radius: var(--radius-full);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-sec);
+    white-space: nowrap;
+  }
+  .pill:active { transform: scale(0.97); }
+  .pill-badge {
+    background: var(--yellow);
+    color: #000;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* ══════ GAME SECTIONS ══════ */
+  .section { margin-top: 24px; }
+
+  .s-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px 12px;
+  }
+
+  .s-title {
+    font-size: 17px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .s-title::before { display: none; }
+
+  .s-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .s-link {
+    font-size: 13px;
+    color: var(--text-dim);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .s-arrow {
+    width: 30px; height: 30px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border-component);
+  }
+  .s-arrow:active { transform: scale(0.9); }
+
+  /* Cards scroll */
+  .cards-wrap {
+    position: relative;
+    padding-left: 16px;
+  }
+  .cards-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 24px;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--bg-base));
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .cards {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scroll-behavior: smooth;
+    padding-right: 16px;
+  }
+
+  /* ══ GAME CARDS ══ */
+  .card {
+    flex-shrink: 0;
+    width: 120px;
+    height: 160px;
+    border-radius: var(--card-radius);
+    overflow: hidden;
+    position: relative;
+    scroll-snap-align: start;
+    cursor: pointer;
+    border: 1px solid var(--border-component);
+  }
+  .card:active { transform: scale(0.97); }
+
+  .card-img {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-size: cover;
+    background-position: center;
+  }
+  .card-img img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+
+  .card-img::before { display: none; }
+
+  .card-img::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 70%;
+    background: linear-gradient(to bottom, transparent 0%, var(--card-color) 65%);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .card-info {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 10px;
+    z-index: 3;
+    text-align: center;
+  }
+
+  .card-name {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .card-studio {
+    font-size: 10px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.6);
+    margin-top: 3px;
+  }
+
+  /* Badge */
+  .badge {
+    position: absolute;
+    top: 8px; left: 8px;
+    z-index: 10;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+  .badge.hot {
+    background: var(--red);
+    color: #fff;
+  }
+  .badge.gold {
+    background: var(--yellow);
+    color: #000;
+  }
+
+  /* Card gradient backgrounds */
+  .g1 { --card-color: #0a6e3a; background: linear-gradient(160deg, #0a6e3a, #1db954, #0d8045); }
+  .g2 { --card-color: #c0206e; background: linear-gradient(160deg, #c0206e, #e8489a, #d53085); }
+  .g3 { --card-color: #2250d0; background: linear-gradient(160deg, #2250d0, #4878f0, #3060e0); }
+  .g4 { --card-color: #c87800; background: linear-gradient(160deg, #c87800, #f0a820, #d89010); }
+  .g5 { --card-color: #0e8e98; background: linear-gradient(160deg, #0e8e98, #20c0c8, #18a8b0); }
+  .g6 { --card-color: #7828c8; background: linear-gradient(160deg, #7828c8, #a050f0, #8838d8); }
+  .g7 { --card-color: #d88010; background: linear-gradient(160deg, #d88010, #f0a030, #e89020); }
+  .g8 { --card-color: #d02850; background: linear-gradient(160deg, #d02850, #f04870, #e03060); }
+  .g9 { --card-color: #2848c8; background: linear-gradient(160deg, #2848c8, #4870f0, #3858d8); }
+  .g10 { --card-color: #d04020; background: linear-gradient(160deg, #d04020, #f06040, #e05030); }
+
+  /* Divider */
+  .sep {
+    height: 1px;
+    margin: 8px 16px;
+    background: var(--border);
+  }
+
+  /* ══════ PROMO BANNER ══════ */
+  .promo {
+    margin: 24px 16px;
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .promo.jackpot-promo {
+    background: #151030;
+    border: 1px solid rgba(155,122,255,0.12);
+  }
+  .promo.jackpot-promo::before,
+  .promo.jackpot-promo::after { display: none; }
+  .promo.live-promo {
+    background: #1a0e16;
+    border: 1px solid rgba(239,64,96,0.12);
+  }
+  .promo.live-promo::before,
+  .promo.live-promo::after { display: none; }
+
+  .promo-tag {
+    font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--yellow); margin-bottom: 10px;
+  }
+  .live-promo .promo-tag { color: var(--red); }
+  .promo-title {
+    font-size: 22px; font-weight: 800; line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  .promo-title span { color: var(--yellow); }
+  .promo-sub { font-size: 13px; color: var(--text-sec); margin-bottom: 20px; line-height: 1.4; }
+  .promo-cta {
+    display: inline-flex;
+    align-self: flex-start;
+    padding: 12px 28px;
+    border-radius: var(--radius-full);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.15s;
+  }
+  .promo-cta:active { transform: scale(0.97); }
+  .jackpot-promo .promo-cta {
+    background: var(--yellow);
+    color: #000;
+  }
+  .live-promo .promo-cta {
+    background: var(--red);
+    color: #fff;
+  }
+
+  /* ══════ BOTTOM NAV ══════ */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    height: 68px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    background: rgba(9,7,26,0.96);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+    z-index: 200;
+    border-top: 1px solid var(--border);
+  }
+
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 0 0;
+    width: 64px;
+    position: relative;
+  }
+
+  .nav-icon { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
+  .nav-label { font-size: 10px; font-weight: 500; color: var(--text-dim); }
+  .nav-item.active .nav-label { color: var(--yellow); font-weight: 600; }
+  .nav-item.active .nav-icon img {
+    filter: brightness(0) saturate(100%) invert(79%) sepia(68%) saturate(600%) hue-rotate(6deg) brightness(103%) contrast(97%);
+  }
+  .nav-item.active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 16px; height: 2px;
+    border-radius: 1px;
+    background: var(--yellow);
+  }
+
+  .nav-item.wallet-nav { top: -20px; margin-bottom: -20px; }
+  .nav-item.wallet-nav .nav-icon {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--green);
+    border: 3px solid #09071a;
+  }
+  .nav-item.wallet-nav .nav-label { color: var(--green); font-weight: 600; margin-top: 4px; }
+  .nav-item:active .nav-icon { transform: scale(0.9); }
+
+  /* ══════ TAB PAGES ══════ */
+  .tab-page { display: none; }
+  .tab-page.active { display: block; }
+
+  /* page-intro removed */
+  .page-intro { display: none; }
+
+  /* Category pills for tab pages */
+  .page-cats {
+    display: flex;
+    gap: 8px;
+    padding: 0 16px 16px;
+    overflow-x: auto;
+  }
+  .page-cat {
+    flex-shrink: 0;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-dim);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border-component);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .page-cat.active {
+    color: var(--yellow);
+    border-color: rgba(251,206,4,0.3);
+    background: rgba(251,206,4,0.06);
+  }
+
+  /* Game grid for tab pages */
+  .game-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 0 16px 24px;
+  }
+  .game-grid .card {
+    width: auto;
+  }
+
+  /* ── Continue Playing (featured last played) ── */
+  .continue-section {
+    padding: 16px 16px 0;
+  }
+  .continue-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .continue-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .continue-icon {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(251,206,4,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .continue-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .continue-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+  .continue-card {
+    flex-shrink: 0;
+    width: 200px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--bg-card);
+    border: 1px solid var(--border-component);
+  }
+  .continue-card-img {
+    width: 100%;
+    height: 110px;
+    position: relative;
+    overflow: hidden;
+  }
+  .continue-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .continue-card-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0; right: 0;
+    height: 3px;
+    background: rgba(0,0,0,0.4);
+  }
+  .continue-card-progress span {
+    display: block;
+    height: 100%;
+    background: var(--yellow);
+    border-radius: 0 2px 2px 0;
+  }
+  .continue-card-body {
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .continue-card-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .continue-card-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--white);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .continue-card-studio {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+  .continue-play-btn {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--yellow);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  /* ── Stats bar (removed) ── */
+  .stats-bar { display: none; }
+  }
+
+  /* Empty state */
+  .page-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 16px;
+    text-align: center;
+    color: var(--text-dim);
+  }
+  .page-empty-icon {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  .page-empty-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-sec);
+    margin-bottom: 4px;
+  }
+  .page-empty-sub {
+    font-size: 13px;
+  }
+
+  /* ══════ VIEW ALL PAGE ══════ */
+  .view-all-page {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 250;
+    background: var(--bg-base);
+    max-width: 430px;
+    margin: 0 auto;
+    flex-direction: column;
+  }
+  .view-all-page.open {
+    display: flex;
+  }
+  .view-all-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .view-all-back {
+    width: 36px; height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    background: rgba(255,255,255,0.04);
+    border: none;
+    cursor: pointer;
+    color: var(--white);
+    flex-shrink: 0;
+  }
+  .view-all-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .view-all-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+  }
+  .view-all-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .view-all-grid .card {
+    width: auto;
+  }
+
+  /* ══════ WINNERS TICKER ══════ */
+  .winners-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    margin: 12px 16px 0;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border-component);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .winners-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--green);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .winners-label::before {
+    content: '';
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--green);
+  }
+  .winners-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    flex: 1;
+  }
+  .winner-chip {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px 5px 5px;
+    background: rgba(255,255,255,0.04);
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-component);
+  }
+  .winner-avatar {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 700; color: var(--text-sec); flex-shrink: 0;
+  }
+  .winner-name { font-size: 12px; font-weight: 600; color: var(--text-dim); }
+  .winner-amount { font-size: 12px; font-weight: 700; color: var(--green); }
+
+  /* ══════ WALLET FULLSCREEN ══════ */
+  .wallet-page {
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    background: var(--bg-base);
+    max-width: 430px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .wallet-page.open { transform: translateY(0); }
+  .wallet-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 299;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+  }
+  .wallet-overlay.open { opacity: 1; visibility: visible; }
+
+  /* Wallet header */
+  .w-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    flex-shrink: 0;
+  }
+  .w-back {
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-sm);
+    background: rgba(255,255,255,0.04);
+    border: none;
+    cursor: pointer;
+    color: var(--white);
+  }
+  .w-title {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .w-header-actions {
+    display: flex;
+    gap: 8px;
+  }
+  .w-header-btn {
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-sm);
+    background: rgba(255,255,255,0.04);
+    border: none;
+    cursor: pointer;
+    color: var(--text-dim);
+  }
+
+  /* Balance hero */
+  .w-balance {
+    text-align: center;
+    padding: 8px 20px 24px;
+    flex-shrink: 0;
+  }
+  .w-balance-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .w-balance-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .w-balance-amount {
+    font-size: 40px;
+    font-weight: 900;
+    letter-spacing: -2px;
+    color: var(--white);
+    line-height: 1;
+  }
+  .w-balance-currency {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dim);
+  }
+  .w-balance-usd {
+    font-size: 13px;
+    color: var(--text-dim);
+    font-weight: 500;
+  }
+
+  /* Action buttons row */
+  .w-actions {
+    display: flex;
+    gap: 10px;
+    padding: 0 20px 20px;
+    flex-shrink: 0;
+  }
+  .w-action {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 0;
+    border-radius: var(--radius-md);
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    transition: transform 0.15s;
+  }
+  .w-action:active { transform: scale(0.96); }
+  .w-action-icon {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .w-action.deposit {
+    background: rgba(251,206,4,0.06);
+    color: var(--yellow);
+  }
+  .w-action.deposit .w-action-icon {
+    background: var(--yellow);
+    color: #000;
+  }
+  .w-action.withdraw {
+    background: rgba(255,255,255,0.03);
+    color: var(--text-sec);
+  }
+  .w-action.withdraw .w-action-icon {
+    background: rgba(255,255,255,0.08);
+    color: var(--white);
+  }
+  .w-action.swap {
+    background: rgba(255,255,255,0.03);
+    color: var(--text-sec);
+  }
+  .w-action.swap .w-action-icon {
+    background: rgba(255,255,255,0.08);
+    color: var(--white);
+  }
+
+  /* Wallet body scroll */
+  .w-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 20px 24px;
+  }
+
+  /* Recent transactions */
+  .w-section-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+  }
+  .w-tx-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 24px;
+  }
+  .w-tx {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .w-tx:last-child { border-bottom: none; }
+  .w-tx-icon {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .w-tx-icon.in { background: rgba(14,204,104,0.1); color: var(--green); }
+  .w-tx-icon.out { background: rgba(239,64,96,0.1); color: var(--red); }
+  .w-tx-icon.bonus { background: rgba(251,206,4,0.1); color: var(--yellow); }
+  .w-tx-info { flex: 1; min-width: 0; }
+  .w-tx-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--white);
+  }
+  .w-tx-meta {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+  .w-tx-right { text-align: right; flex-shrink: 0; }
+  .w-tx-amount {
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .w-tx-amount.green { color: var(--green); }
+  .w-tx-amount.red { color: var(--red); }
+  .w-tx-amount.yellow { color: var(--yellow); }
+  .w-tx-status {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  /* Assets list */
+  .w-asset {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .w-asset:last-child { border-bottom: none; }
+  .w-asset-icon {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .w-asset-info { flex: 1; }
+  .w-asset-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--white);
+  }
+  .w-asset-ticker {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 1px;
+  }
+  .w-asset-right { text-align: right; }
+  .w-asset-bal {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .w-asset-usd {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 1px;
+  }
+
+  /* ══ Deposit/Withdraw sub-pages ══ */
+  .w-subpage {
+    position: fixed;
+    inset: 0;
+    z-index: 310;
+    background: var(--bg-base);
+    max-width: 430px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .w-subpage.open { transform: translateX(0); }
+  .w-sub-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    flex-shrink: 0;
+  }
+  .w-sub-back {
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-sm);
+    background: rgba(255,255,255,0.04);
+    border: none;
+    cursor: pointer;
+    color: var(--white);
+  }
+  .w-sub-title {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .w-sub-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 20px 32px;
+  }
+
+  /* Amount input */
+  .w-amount-section { margin-bottom: 24px; }
+  .w-amount-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+  }
+  .w-amount-input-wrap {
+    display: flex;
+    align-items: center;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border-component);
+    border-radius: var(--radius-lg);
+    padding: 0 20px;
+    height: 64px;
+    margin-bottom: 12px;
+    transition: border-color 0.2s;
+  }
+  .w-amount-input-wrap:focus-within {
+    border-color: rgba(251,206,4,0.3);
+  }
+  .w-amount-currency {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-dim);
+    margin-right: 10px;
+  }
+  .w-amount-input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    font-family: inherit;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: -1px;
+  }
+  .w-amount-input::placeholder { color: rgba(255,255,255,0.15); }
+
+  .w-quick-amounts {
+    display: flex;
+    gap: 8px;
+  }
+  .w-quick-btn {
+    flex: 1;
+    padding: 12px 0;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-sec);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border-component);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  .w-quick-btn:active {
+    background: rgba(251,206,4,0.08);
+    border-color: rgba(251,206,4,0.2);
+    color: var(--yellow);
+  }
+
+  /* Method selector */
+  .w-method-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+  }
+  .w-methods {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .w-method-pill {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 8px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border-component);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+  .w-method-pill.active {
+    border-color: rgba(251,206,4,0.3);
+    background: rgba(251,206,4,0.04);
+  }
+  .w-method-icon {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .w-method-pill.active .w-method-icon {
+    background: rgba(251,206,4,0.1);
+  }
+  .w-method-name {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-dim);
+  }
+  .w-method-pill.active .w-method-name {
+    color: var(--yellow);
+  }
+
+  /* Method detail area */
+  .w-method-detail { margin-bottom: 24px; }
+  .w-method-panel { display: none; }
+  .w-method-panel.active { display: block; }
+
+  /* Payment methods */
+  .payment-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-sec);
+    margin-bottom: 10px;
+  }
+  .payment-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .payment-method {
+    padding: 14px 16px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border-component);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .payment-method-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .payment-method.selected {
+    border-color: rgba(251,206,4,0.3);
+    background: rgba(251,206,4,0.04);
+  }
+  .payment-method-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    background: rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .payment-method-info { flex: 1; }
+  .payment-method-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white);
+  }
+  .payment-method-desc {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+  .payment-method-check {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .payment-method.selected .payment-method-check {
+    border-color: var(--yellow);
+    background: var(--yellow);
+  }
+
+  /* Method detail sections */
+  .method-details {
+    display: none;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .payment-method.selected .method-details { display: block; }
+
+  /* Crypto selectors */
+  .coin-selector {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .coin-option {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 0;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-dim);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border-component);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .coin-option .coin-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    color: #fff;
+  }
+  .coin-icon.btc { background: #f7931a; }
+  .coin-icon.eth { background: #627eea; }
+  .coin-icon.usdt { background: #26a17b; }
+  .coin-icon.sol { background: #9945ff; }
+  .coin-icon.bnb { background: #f3ba2f; color: #000; }
+  .coin-icon.xrp { background: #00aae4; }
+  .coin-icon.trx { background: #ef0027; }
+  .coin-icon.ltc { background: #345d9d; }
+  .coin-option.active {
+    border-color: rgba(251,206,4,0.3);
+    color: var(--yellow);
+    background: rgba(251,206,4,0.06);
+  }
+
+  /* Network selector */
+  .network-section {
+    margin-bottom: 12px;
+  }
+  .network-section-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+  .network-options {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .network-option {
+    padding: 8px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-sec);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border-component);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .network-option.active {
+    border-color: rgba(251,206,4,0.3);
+    color: var(--yellow);
+    background: rgba(251,206,4,0.06);
+  }
+  .network-option .net-fee {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  /* Address display (deposit) */
+  .address-section {
+    margin-bottom: 12px;
+  }
+  .address-section-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+  .address-box {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border-component);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .address-text {
+    flex: 1;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-sec);
+    word-break: break-all;
+    line-height: 1.4;
+    font-family: monospace;
+  }
+  .copy-btn {
+    flex-shrink: 0;
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    background: rgba(251,206,4,0.1);
+    border: 1px solid rgba(251,206,4,0.15);
+    color: var(--yellow);
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .qr-placeholder {
+    width: 100%;
+    height: 120px;
+    background: #fff;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+  }
+  .qr-placeholder svg { color: #000; }
+  .deposit-min {
+    font-size: 11px;
+    color: var(--text-dim);
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  /* Address input (withdraw) */
+  .field-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+  .field-input {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border-component);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--white);
+    outline: none;
+    margin-bottom: 12px;
+    transition: border-color 0.2s;
+  }
+  .field-input:focus { border-color: rgba(251,206,4,0.3); }
+  .field-input::placeholder { color: var(--text-dim); }
+
+  /* Saved cards */
+  .saved-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .saved-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border-component);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .saved-card.active {
+    border-color: rgba(251,206,4,0.3);
+    background: rgba(251,206,4,0.04);
+  }
+  .saved-card-brand {
+    width: 40px;
+    height: 26px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+  .brand-visa {
+    background: #1a1f71;
+    color: #fff;
+  }
+  .brand-mc {
+    background: #eb001b;
+    color: #fff;
+  }
+  .saved-card-info {
+    flex: 1;
+  }
+  .saved-card-number {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.5px;
+  }
+  .saved-card-expiry {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+  .saved-card-radio {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.1);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .saved-card.active .saved-card-radio {
+    border-color: var(--yellow);
+    background: var(--yellow);
+  }
+  .saved-card.active .saved-card-radio::after {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #000;
+  }
+  .add-new-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    background: rgba(255,255,255,0.03);
+    border: 1px dashed rgba(255,255,255,0.1);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: border-color 0.2s;
+    color: var(--text-sec);
+    font-size: 13px;
+    font-weight: 500;
+    font-family: inherit;
+    width: 100%;
+    margin-bottom: 12px;
+  }
+  .add-new-card:hover { border-color: rgba(255,255,255,0.2); }
+  .add-new-card .plus-icon {
+    width: 28px; height: 28px;
+    border-radius: var(--radius-sm);
+    background: rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .new-card-form {
+    display: none;
+    margin-top: 8px;
+  }
+  .new-card-form.show { display: block; }
+
+  /* Card fields */
+  .card-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .card-row {
+    display: flex;
+    gap: 10px;
+  }
+  .card-row .field-input { margin-bottom: 0; }
+
+  /* Bank info display */
+  .bank-info-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .bank-info-row:last-child { border-bottom: none; }
+  .bank-info-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-dim);
+  }
+  .bank-info-value {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-sec);
+    font-family: monospace;
+  }
+
+  /* Fee/info note */
+  .fee-note {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,0.02);
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+  .fee-note svg { flex-shrink: 0; }
+
+  /* Submit button */
+  .drawer-submit {
+    width: 100%;
+    padding: 16px;
+    border-radius: var(--radius-md);
+    background: var(--yellow);
+    color: #000;
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.15s;
+  }
+  .drawer-submit:active { transform: scale(0.98); }
+  .drawer-submit.withdraw-btn {
+    background: var(--red);
+    color: #fff;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ══ Header ══ -->
+<header class="header">
+  <div class="logo">MYBC</div>
+  <div class="header-right">
+    <div class="h-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="8" width="18" height="13" rx="1"/><path d="M12 8v13"/><path d="M3 12h18"/>
+        <path d="M12 8c-1.5-2-4-3-4-3s1-2 4-2 4 2 4 2-2.5 1-4 3z"/>
+      </svg>
+    </div>
+    <div class="wallet-btn">
+      <div class="wallet-coin">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOmjj7kYFgdTQX-BcMBfiMKZug7gP5SoARGw&s" alt="USDT" width="28" height="28">
+      </div>
+      <span class="wallet-amount">5,343.34</span>
+      <div class="add-btn"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+    </div>
+  </div>
+</header>
+
+<!-- ══ Winners Ticker ══ -->
+<div class="winners-bar">
+  <div class="winners-label">Live Wins</div>
+  <div class="winners-scroll">
+    <div class="winner-chip"><div class="winner-avatar">A</div><span class="winner-name">Alex</span><span class="winner-amount">+$1,230</span></div>
+    <div class="winner-chip"><div class="winner-avatar">M</div><span class="winner-name">Maria</span><span class="winner-amount">+$450</span></div>
+    <div class="winner-chip"><div class="winner-avatar">J</div><span class="winner-name">Jake</span><span class="winner-amount">+$8,900</span></div>
+    <div class="winner-chip"><div class="winner-avatar">S</div><span class="winner-name">Sara</span><span class="winner-amount">+$2,100</span></div>
+    <div class="winner-chip"><div class="winner-avatar">D</div><span class="winner-name">David</span><span class="winner-amount">+$670</span></div>
+  </div>
+</div>
+
+<!-- ══ Hero Banner ══ -->
+<section class="hero-banner">
+  <div class="hero-top">
+    <div class="hero-tag">Welcome Bonus <span class="hero-tag-dot"></span></div>
+    <div class="hero-step-badge">Step <span>2</span> of 5</div>
+  </div>
+  <div class="hero-body">
+    <div class="hero-amount"><span>150%</span> Bonus</div>
+    <div class="hero-desc">+ <span class="hero-desc-highlight">50 Free Spins</span> on first deposit</div>
+    <div class="hero-sub">Up to $500 bonus value</div>
+  </div>
+  <div class="hero-progress-section">
+    <div class="hero-progress-row">
+      <span class="hero-progress-label">
+        <span class="hero-next-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-width="2.5" stroke-linecap="round"><polyline points="9 6 15 12 9 18"/></svg></span>
+        Next: <strong>Verify Phone</strong>
+      </span>
+    </div>
+    <div class="hero-track"><div class="hero-fill"></div></div>
+  </div>
+  <div class="hero-actions">
+    <button class="hero-cta">Claim Now</button>
+    <button class="hero-cta-sec">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>
+    </button>
+  </div>
+</section>
+<div class="dots">
+  <div class="dot active"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+</div>
+
+<!-- ══ Sticky Nav ══ -->
+<div class="tabs-scroll-wrap">
+<div class="tabs-scroll">
+    <div class="tab active">
+      <span class="t-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="8" y1="4" x2="8" y2="20"/><line x1="16" y1="4" x2="16" y2="20"/><line x1="2" y1="12" x2="22" y2="12"/></svg></span> Slots
+    </div>
+    <div class="tab"><span class="t-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15 15 0 010 20M12 2a15 15 0 000 20M2 12h20"/></svg></span> Sports</div>
+    <div class="tab"><span class="t-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 01-4 2z"/></svg></span> Crash Games</div>
+    <div class="tab"><span class="t-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span> Live Casino</div>
+    <div class="tab"><span class="t-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg></span> Mini Games</div>
+    <div class="tab"><span class="t-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span> Poker</div>
+  </div>
+</div>
+
+<!-- ══ Tab Pages ══ -->
+<div class="tab-page active" data-page="slots">
+  <div class="prov-bar">
+    <div class="prov-search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg></div>
+    <div class="prov-logos">
+      <div class="prov-logo"><img src="providers/Mobile.png" alt="3 Oaks"></div>
+      <div class="prov-logo"><img src="providers/image 527.png" alt="SmartSoft"></div>
+      <div class="prov-logo"><img src="providers/Betgames.png" alt="Betgames"></div>
+      <div class="prov-logo"><img src="providers/image 509.png" alt="Bgaming"></div>
+      <div class="prov-logo"><img src="providers/image 512.png" alt="Caleta"></div>
+      <div class="prov-logo"><img src="providers/Frame 2147224040.png" alt="Aviatrix"></div>
+      <div class="prov-logo"><img src="providers/elysiumstudios.png" alt="Elysium"></div>
+      <div class="prov-logo"><img src="providers/image 507.png" alt="Provider"></div>
+      <div class="prov-logo"><img src="providers/image 513.png" alt="Provider"></div>
+    </div>
+  </div>
+
+  <div class="filters">
+    <div class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff6b35" stroke-width="2" stroke-linecap="round"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.07-2.14 0-5.5 3-7 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.15.5-2.5 1.5-3.5l1 1z"/></svg> Hot Games</div>
+    <div class="pill"><span class="pill-badge">NEW</span> New Games</div>
+    <div class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="8" width="18" height="13" rx="1"/><path d="M12 8v13"/><path d="M3 12h18"/></svg> Buy Bonus</div>
+  </div>
+
+<!-- ══ Continue Playing ══ -->
+<div class="continue-section">
+  <div class="continue-header">
+    <div class="continue-header-left">
+      <div class="continue-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-width="2.5" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </div>
+      <div class="continue-title">Continue Playing</div>
+    </div>
+    <a class="s-link">See All</a>
+  </div>
+  <div class="continue-scroll">
+    <div class="continue-card">
+      <div class="continue-card-img">
+        <img src="games/018f3fad-6a02-4284-b603-31c372f51d0d.avif" alt="Floating Dragon Megaways">
+        <div class="continue-card-progress"><span style="width:65%"></span></div>
+      </div>
+      <div class="continue-card-body">
+        <div class="continue-card-info">
+          <div class="continue-card-name">Floating Dragon</div>
+          <div class="continue-card-studio">Pragmatic Play</div>
+        </div>
+        <button class="continue-play-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>
+      </div>
+    </div>
+    <div class="continue-card">
+      <div class="continue-card-img">
+        <img src="games/0b652f41-d47b-40d8-a1d7-ac3f063c339f.avif" alt="Big Bass Bonanza">
+        <div class="continue-card-progress"><span style="width:30%"></span></div>
+      </div>
+      <div class="continue-card-body">
+        <div class="continue-card-info">
+          <div class="continue-card-name">Big Bass Bonanza</div>
+          <div class="continue-card-studio">Pragmatic Play</div>
+        </div>
+        <button class="continue-play-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>
+      </div>
+    </div>
+    <div class="continue-card">
+      <div class="continue-card-img">
+        <img src="games/Gates of Olympus.avif" alt="Gates of Olympus 1000">
+        <div class="continue-card-progress"><span style="width:80%"></span></div>
+      </div>
+      <div class="continue-card-body">
+        <div class="continue-card-info">
+          <div class="continue-card-name">Gates of Olympus</div>
+          <div class="continue-card-studio">Pragmatic Play</div>
+        </div>
+        <button class="continue-play-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>
+      </div>
+    </div>
+    <div class="continue-card">
+      <div class="continue-card-img">
+        <img src="games/Sweet bonanza.avif" alt="Sweet Bonanza Xmas">
+        <div class="continue-card-progress"><span style="width:45%"></span></div>
+      </div>
+      <div class="continue-card-body">
+        <div class="continue-card-info">
+          <div class="continue-card-name">Sweet Bonanza</div>
+          <div class="continue-card-studio">Pragmatic Play</div>
+        </div>
+        <button class="continue-play-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ Quick Stats ══ -->
+<div class="stats-bar">
+  <div class="stat-card">
+    <div class="stat-value green">2,847</div>
+    <div class="stat-label">Online Now</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value yellow">$1.2M</div>
+    <div class="stat-label">Won Today</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">4,300+</div>
+    <div class="stat-label">Games</div>
+  </div>
+</div>
+
+<!-- ══ Favourites ══ -->
+<div class="section">
+  <div class="s-head"><div class="s-title">Favourites</div><div class="s-right"><a class="s-link">View All</a><div class="s-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div><div class="s-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 6 15 12 9 18"/></svg></div></div></div>
+  <div class="cards-wrap"><div class="cards">
+    <div class="card"><div class="card-img g6"><img src="games/Sweet bonanza.avif" alt="Sweet Bonanza"></div><div class="card-info"><div class="card-name">Sweet Bonanza</div><div class="card-studio">Pragmatic Play</div></div></div>
+    <div class="card"><span class="badge gold">TOP</span><div class="card-img g7"><img src="games/Gates of Olympus.avif" alt="Gates of Olympus"></div><div class="card-info"><div class="card-name">Gates of Olympus</div><div class="card-studio">Pragmatic Play</div></div></div>
+    <div class="card"><div class="card-img g8"><img src="games/2ff43dae-4869-4cdc-978b-51045e811c11.avif" alt="Sugar Rush"></div><div class="card-info"><div class="card-name">Sugar Rush</div><div class="card-studio">Pragmatic Play</div></div></div>
+    <div class="card"><div class="card-img g9"><img src="games/3cb88a0b-8b47-4c9b-aa5e-ffe76edbf91a.avif" alt="Big Bass Bonanza"></div><div class="card-info"><div class="card-name">Big Bass Bonanza</div><div class="card-studio">Pragmatic Play</div></div></div>
+    <div class="card"><div class="card-img g10"><img src="games/46b6da70-80b8-4aea-9d95-0f9b1fec8668.avif" alt="Wild West Gold"></div><div class="card-info"><div class="card-name">Wild West Gold</div><div class="card-studio">Pragmatic Play</div></div></div>
+  </div></div>
+</div>
+
+<div class="sep"></div>
+
+<!-- ══ Popular Now ══ -->
+<div class="section">
+  <div class="s-head"><div class="s-title">Popular Now</div><div class="s-right"><a class="s-link">View All</a><div class="s-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div><div class="s-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 6 15 12 9 18"/></svg></div></div></div>
+  <div class="cards-wrap"><div class="cards">
+    <div class="card"><span class="badge gold">TOP</span><div class="card-img g7"><img src="games/475878c9-ee09-440a-9f30-609de072aaac.avif" alt="Treasures of Aztec"></div><div class="card-info"><div class="card-name">Treasures of Aztec</div><div class="card-studio">PG Soft</div></div></div>
+    <div class="card"><div class="card-img g9"><img src="games/5265e894-dd1a-4d05-9991-5b902e542bf4.avif" alt="Starlight Princess"></div><div class="card-info"><div class="card-name">Starlight Princess</div><div class="card-studio">Pragmatic Play</div></div></div>
+    <div class="card"><span class="badge hot">HOT</span><div class="card-img g1"><img src="games/54fc1917-9bc5-4fd6-86f5-2976d6e9da1b.avif" alt="Fortune Tiger"></div><div class="card-info"><div class="card-name">Fortune Tiger</div><div class="card-studio">PG Soft</div></div></div>
+    <div class="card"><div class="card-img g6"><img src="games/5e53426e-e99d-4b0f-9d06-40c51db4d3c6.avif" alt="Candy Village"></div><div class="card-info"><div class="card-name">Candy Village</div><div class="card-studio">Pragmatic Play</div></div></div>
+    <div class="card"><div class="card-img g10"><img src="games/5f064616-8fa6-4660-9fcd-e948622914ab.avif" alt="Mustang Gold"></div><div class="card-info"><div class="card-name">Mustang Gold</div><div class="card-studio">Pragmatic Play</div></div></div>
+  </div></div>
+</div>
+
+<!-- ══ Jackpot Promo ══ -->
+<div class="promo jackpot-promo">
+  <div class="promo-tag">Jackpot Zone</div>
+  <div class="promo-title">Win up to <span>$500,000</span></div>
+  <div class="promo-sub">Progressive jackpots running 24/7</div>
+  <button class="promo-cta">Play Jackpots</button>
+</div>
+
+<!-- ══ New Releases ══ -->
+<div class="section">
+  <div class="s-head"><div class="s-title">New Releases</div><div class="s-right"><a class="s-link">View All</a><div class="s-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div><div class="s-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 6 15 12 9 18"/></svg></div></div></div>
+  <div class="cards-wrap"><div class="cards">
+    <div class="card"><span class="badge gold">NEW</span><div class="card-img g3"><img src="games/5fa8cfd0-e6d4-428e-973f-99c5c818baa7.avif" alt="Olympus Rising"></div><div class="card-info"><div class="card-name">Olympus Rising</div><div class="card-studio">Pragmatic Play</div></div></div>
+    <div class="card"><div class="card-img g5"><img src="games/6190b331-59c1-4123-a200-81d5994e56d6.avif" alt="Dragon's Fortune"></div><div class="card-info"><div class="card-name">Dragon's Fortune</div><div class="card-studio">3 Oaks</div></div></div>
+    <div class="card"><span class="badge gold">NEW</span><div class="card-img g8"><img src="games/6d56b160-4e27-4133-bc27-4a80fe88ee66.avif" alt="Lucky Clover"></div><div class="card-info"><div class="card-name">Lucky Clover</div><div class="card-studio">SmartSoft</div></div></div>
+    <div class="card"><div class="card-img g2"><img src="games/74fedd2b-7542-4a9f-af7d-2e7203bc8c29.avif" alt="Phoenix Blaze"></div><div class="card-info"><div class="card-name">Phoenix Blaze</div><div class="card-studio">BGaming</div></div></div>
+    <div class="card"><div class="card-img g10"><img src="games/9447fc08-8290-45a1-b352-38bc252fd103.avif" alt="Mystic Gems"></div><div class="card-info"><div class="card-name">Mystic Gems</div><div class="card-studio">PG Soft</div></div></div>
+  </div></div>
+</div>
+
+<div class="sep"></div>
+
+<!-- ══ Top Rated ══ -->
+<div class="section">
+  <div class="s-head"><div class="s-title">Top Rated</div><div class="s-right"><a class="s-link">View All</a><div class="s-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div><div class="s-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 6 15 12 9 18"/></svg></div></div></div>
+  <div class="cards-wrap"><div class="cards">
+    <div class="card"><span class="badge hot">TOP</span><div class="card-img g1"><img src="games/990a28ca-77f5-48c1-b20c-80688d50eb92.avif" alt="Book of Dead"></div><div class="card-info"><div class="card-name">Book of Dead</div><div class="card-studio">Play'n GO</div></div></div>
+    <div class="card"><span class="badge hot">TOP</span><div class="card-img g6"><img src="games/9ea57ad5-aece-40ca-9d6a-4cd5bf187815.avif" alt="Reactoonz 2"></div><div class="card-info"><div class="card-name">Reactoonz 2</div><div class="card-studio">Play'n GO</div></div></div>
+    <div class="card"><div class="card-img g9"><img src="games/b5587534-5640-438d-be15-96659da16a2a.avif" alt="Gonzo's Quest"></div><div class="card-info"><div class="card-name">Gonzo's Quest</div><div class="card-studio">NetEnt</div></div></div>
+    <div class="card"><div class="card-img g4"><img src="games/c8ae2e16-e2d8-44ec-8062-fe8963b75377.avif" alt="Dead or Alive 2"></div><div class="card-info"><div class="card-name">Dead or Alive 2</div><div class="card-studio">NetEnt</div></div></div>
+    <div class="card"><div class="card-img g7"><img src="games/cd4dba63-6ecc-420f-9491-c350ac96ae1b.avif" alt="Rise of Merlin"></div><div class="card-info"><div class="card-name">Rise of Merlin</div><div class="card-studio">Play'n GO</div></div></div>
+  </div></div>
+</div>
+
+<!-- ══ Live Casino Promo ══ -->
+<div class="promo live-promo">
+  <div class="promo-tag">Live Now</div>
+  <div class="promo-title">Live Casino Tables</div>
+  <div class="promo-sub">Real dealers, real stakes, real wins</div>
+  <button class="promo-cta">Join Table</button>
+</div>
+
+<!-- ══ Jackpot Games ══ -->
+<div class="section">
+  <div class="s-head"><div class="s-title">Jackpot Games</div><div class="s-right"><a class="s-link">View All</a><div class="s-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div><div class="s-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 6 15 12 9 18"/></svg></div></div></div>
+  <div class="cards-wrap"><div class="cards">
+    <div class="card"><span class="badge gold">$$$</span><div class="card-img g4"><img src="games/cd859dc3-b8ce-4283-bb14-603dc504bd76.avif" alt="Mega Moolah"></div><div class="card-info"><div class="card-name">Mega Moolah</div><div class="card-studio">Microgaming</div></div></div>
+    <div class="card"><span class="badge gold">$$$</span><div class="card-img g2"><img src="games/def6f80d-1ff2-464a-ab06-78890580e312.avif" alt="Divine Fortune"></div><div class="card-info"><div class="card-name">Divine Fortune</div><div class="card-studio">NetEnt</div></div></div>
+    <div class="card"><div class="card-img g8"><img src="games/ea749ef0-41ae-4418-8d38-9ab0638cec3c.avif" alt="Hall of Gods"></div><div class="card-info"><div class="card-name">Hall of Gods</div><div class="card-studio">NetEnt</div></div></div>
+    <div class="card"><div class="card-img g5"><img src="games/eac203ee-4bfc-4e73-b7e8-a007577fb968.avif" alt="Mega Fortune"></div><div class="card-info"><div class="card-name">Mega Fortune</div><div class="card-studio">NetEnt</div></div></div>
+    <div class="card"><div class="card-img g1"><img src="games/f65c7b1c-62e0-4ad2-928e-05751a40f4d9.avif" alt="Gold Rush"></div><div class="card-info"><div class="card-name">Gold Rush</div><div class="card-studio">Pragmatic Play</div></div></div>
+  </div></div>
+</div>
+
+<div class="sep"></div>
+
+<!-- ══ Live Casino ══ -->
+<div class="section">
+  <div class="s-head"><div class="s-title">Live Casino</div><div class="s-right"><a class="s-link">View All</a><div class="s-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div><div class="s-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 6 15 12 9 18"/></svg></div></div></div>
+  <div class="cards-wrap"><div class="cards">
+    <div class="card"><span class="badge hot">LIVE</span><div class="card-img g3"><img src="games/f79663cd-1b3f-43eb-9a6c-62067c762178.avif" alt="Lightning Roulette"></div><div class="card-info"><div class="card-name">Lightning Roulette</div><div class="card-studio">Evolution</div></div></div>
+    <div class="card"><span class="badge hot">LIVE</span><div class="card-img g6"><img src="games/f92a5117-976b-4ef7-aafc-007391cc84d2.avif" alt="Crazy Time"></div><div class="card-info"><div class="card-name">Crazy Time</div><div class="card-studio">Evolution</div></div></div>
+    <div class="card"><div class="card-img g10"><img src="games/ffcaeb0f-38cc-4a19-b46f-9d7b28523bbb.avif" alt="Blackjack VIP"></div><div class="card-info"><div class="card-name">Blackjack VIP</div><div class="card-studio">Evolution</div></div></div>
+    <div class="card"><div class="card-img g9"><img src="games/018f3fad-6a02-4284-b603-31c372f51d0d.avif" alt="Dream Catcher"></div><div class="card-info"><div class="card-name">Dream Catcher</div><div class="card-studio">Evolution</div></div></div>
+    <div class="card"><div class="card-img g7"><img src="games/0b652f41-d47b-40d8-a1d7-ac3f063c339f.avif" alt="Baccarat Squeeze"></div><div class="card-info"><div class="card-name">Baccarat Squeeze</div><div class="card-studio">Evolution</div></div></div>
+  </div></div>
+</div>
+</div><!-- end slots tab-page -->
+
+<!-- ══ Sports Tab ══ -->
+<div class="tab-page" data-page="sports">
+  <div class="page-intro">
+    <div class="page-intro-title">Sports Betting</div>
+    <div class="page-intro-sub">Pre-match & live betting on all major leagues</div>
+  </div>
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-value green">126</div>
+      <div class="stat-label">Live Events</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value yellow">5,400+</div>
+      <div class="stat-label">Markets</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">30+</div>
+      <div class="stat-label">Sports</div>
+    </div>
+  </div>
+  <div class="page-cats">
+    <button class="page-cat active">All</button>
+    <button class="page-cat">Football</button>
+    <button class="page-cat">Basketball</button>
+    <button class="page-cat">Tennis</button>
+    <button class="page-cat">MMA</button>
+    <button class="page-cat">Esports</button>
+    <button class="page-cat">Cricket</button>
+  </div>
+  <div class="page-empty">
+    <div class="page-empty-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 2a15 15 0 010 20M12 2a15 15 0 000 20M2 12h20"/></svg>
+    </div>
+    <div class="page-empty-title">Coming Soon</div>
+    <div class="page-empty-sub">Sports betting launches next week</div>
+  </div>
+</div>
+
+<!-- ══ Crash Games Tab ══ -->
+<div class="tab-page" data-page="crash-games">
+  <div class="page-intro">
+    <div class="page-intro-title">Crash Games</div>
+    <div class="page-intro-sub">Cash out before the crash for big wins</div>
+  </div>
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-value green">1,203</div>
+      <div class="stat-label">Playing Now</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value yellow">342x</div>
+      <div class="stat-label">Top Win</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">$89K</div>
+      <div class="stat-label">Paid Today</div>
+    </div>
+  </div>
+  <div class="prov-bar">
+    <div class="prov-search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg></div>
+    <div class="prov-logos">
+      <div class="prov-logo"><img src="providers/Mobile.png" alt="3 Oaks"></div>
+      <div class="prov-logo"><img src="providers/image 527.png" alt="SmartSoft"></div>
+      <div class="prov-logo"><img src="providers/Betgames.png" alt="Betgames"></div>
+      <div class="prov-logo"><img src="providers/image 509.png" alt="Bgaming"></div>
+      <div class="prov-logo"><img src="providers/image 512.png" alt="Caleta"></div>
+    </div>
+  </div>
+  <div class="filters">
+    <div class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff6b35" stroke-width="2" stroke-linecap="round"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.07-2.14 0-5.5 3-7 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.15.5-2.5 1.5-3.5l1 1z"/></svg> Hot Games</div>
+    <div class="pill"><span class="pill-badge">NEW</span> New Games</div>
+    <div class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="8" width="18" height="13" rx="1"/><path d="M12 8v13"/><path d="M3 12h18"/></svg> Buy Bonus</div>
+  </div>
+  <div class="section">
+    <div class="s-head"><div class="s-title">Popular Crash</div><div class="s-right"><a class="s-link">View All</a></div></div>
+    <div class="cards-wrap"><div class="cards">
+      <div class="card"><span class="badge hot">HOT</span><div class="card-img g1"><img src="games/018f3fad-6a02-4284-b603-31c372f51d0d.avif" alt="Aviator"></div><div class="card-info"><div class="card-name">Aviator</div><div class="card-studio">Spribe</div></div></div>
+      <div class="card"><div class="card-img g3"><img src="games/Gates of Olympus.avif" alt="Spaceman"></div><div class="card-info"><div class="card-name">Spaceman</div><div class="card-studio">Pragmatic Play</div></div></div>
+      <div class="card"><span class="badge gold">NEW</span><div class="card-img g5"><img src="games/0d173301-27ee-4138-b6a3-690e8c9d08ea.avif" alt="Plinko"></div><div class="card-info"><div class="card-name">Plinko</div><div class="card-studio">BGaming</div></div></div>
+      <div class="card"><div class="card-img g7"><img src="games/Sweet bonanza.avif" alt="Mines"></div><div class="card-info"><div class="card-name">Mines</div><div class="card-studio">Spribe</div></div></div>
+    </div></div>
+  </div>
+  <div class="section">
+    <div class="s-head"><div class="s-title">Instant Games</div><div class="s-right"><a class="s-link">View All</a></div></div>
+    <div class="cards-wrap"><div class="cards">
+      <div class="card"><div class="card-img g9"><img src="games/1f31718f-41d6-47cd-b969-e11b5729e50e.avif" alt="Goal"></div><div class="card-info"><div class="card-name">Goal</div><div class="card-studio">Spribe</div></div></div>
+      <div class="card"><div class="card-img g2"><img src="games/0b652f41-d47b-40d8-a1d7-ac3f063c339f.avif" alt="Dice"></div><div class="card-info"><div class="card-name">Dice</div><div class="card-studio">Spribe</div></div></div>
+      <div class="card"><div class="card-img g4"><img src="games/c8ae2e16-e2d8-44ec-8062-fe8963b75377.avif" alt="Hilo"></div><div class="card-info"><div class="card-name">Hilo</div><div class="card-studio">Spribe</div></div></div>
+      <div class="card"><div class="card-img g6"><img src="games/5e53426e-e99d-4b0f-9d06-40c51db4d3c6.avif" alt="Keno"></div><div class="card-info"><div class="card-name">Keno</div><div class="card-studio">Spribe</div></div></div>
+      <div class="card"><div class="card-img g8"><img src="games/6d56b160-4e27-4133-bc27-4a80fe88ee66.avif" alt="Limbo"></div><div class="card-info"><div class="card-name">Limbo</div><div class="card-studio">BGaming</div></div></div>
+    </div></div>
+  </div>
+</div>
+
+<!-- ══ Live Casino Tab ══ -->
+<div class="tab-page" data-page="live-casino">
+  <div class="page-intro">
+    <div class="page-intro-title">Live Casino</div>
+    <div class="page-intro-sub">Real dealers streaming 24/7</div>
+  </div>
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-value green">84</div>
+      <div class="stat-label">Tables Live</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value yellow">$52K</div>
+      <div class="stat-label">Max Bet</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">3,100</div>
+      <div class="stat-label">Players</div>
+    </div>
+  </div>
+  <div class="prov-bar">
+    <div class="prov-search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg></div>
+    <div class="prov-logos">
+      <div class="prov-logo"><img src="providers/Mobile.png" alt="3 Oaks"></div>
+      <div class="prov-logo"><img src="providers/image 527.png" alt="SmartSoft"></div>
+      <div class="prov-logo"><img src="providers/Betgames.png" alt="Betgames"></div>
+      <div class="prov-logo"><img src="providers/image 509.png" alt="Bgaming"></div>
+      <div class="prov-logo"><img src="providers/image 512.png" alt="Caleta"></div>
+    </div>
+  </div>
+  <div class="filters">
+    <div class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff6b35" stroke-width="2" stroke-linecap="round"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.07-2.14 0-5.5 3-7 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.15.5-2.5 1.5-3.5l1 1z"/></svg> Hot Games</div>
+    <div class="pill"><span class="pill-badge">NEW</span> New Games</div>
+    <div class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="8" width="18" height="13" rx="1"/><path d="M12 8v13"/><path d="M3 12h18"/></svg> Buy Bonus</div>
+  </div>
+  <div class="section">
+    <div class="s-head"><div class="s-title">Game Shows</div><div class="s-right"><a class="s-link">View All</a></div></div>
+    <div class="cards-wrap"><div class="cards">
+      <div class="card"><span class="badge hot">LIVE</span><div class="card-img g6"><img src="games/f92a5117-976b-4ef7-aafc-007391cc84d2.avif" alt="Crazy Time"></div><div class="card-info"><div class="card-name">Crazy Time</div><div class="card-studio">Evolution</div></div></div>
+      <div class="card"><div class="card-img g9"><img src="games/018f3fad-6a02-4284-b603-31c372f51d0d.avif" alt="Dream Catcher"></div><div class="card-info"><div class="card-name">Dream Catcher</div><div class="card-studio">Evolution</div></div></div>
+      <div class="card"><div class="card-img g4"><img src="games/cd859dc3-b8ce-4283-bb14-603dc504bd76.avif" alt="Monopoly Live"></div><div class="card-info"><div class="card-name">Monopoly Live</div><div class="card-studio">Evolution</div></div></div>
+      <div class="card"><div class="card-img g2"><img src="games/def6f80d-1ff2-464a-ab06-78890580e312.avif" alt="Mega Ball"></div><div class="card-info"><div class="card-name">Mega Ball</div><div class="card-studio">Evolution</div></div></div>
+    </div></div>
+  </div>
+  <div class="section">
+    <div class="s-head"><div class="s-title">Table Games</div><div class="s-right"><a class="s-link">View All</a></div></div>
+    <div class="cards-wrap"><div class="cards">
+      <div class="card"><span class="badge hot">LIVE</span><div class="card-img g3"><img src="games/f79663cd-1b3f-43eb-9a6c-62067c762178.avif" alt="Lightning Roulette"></div><div class="card-info"><div class="card-name">Lightning Roulette</div><div class="card-studio">Evolution</div></div></div>
+      <div class="card"><div class="card-img g10"><img src="games/ffcaeb0f-38cc-4a19-b46f-9d7b28523bbb.avif" alt="Blackjack VIP"></div><div class="card-info"><div class="card-name">Blackjack VIP</div><div class="card-studio">Evolution</div></div></div>
+      <div class="card"><div class="card-img g7"><img src="games/0b652f41-d47b-40d8-a1d7-ac3f063c339f.avif" alt="Baccarat Squeeze"></div><div class="card-info"><div class="card-name">Baccarat Squeeze</div><div class="card-studio">Evolution</div></div></div>
+      <div class="card"><div class="card-img g1"><img src="games/990a28ca-77f5-48c1-b20c-80688d50eb92.avif" alt="Speed Roulette"></div><div class="card-info"><div class="card-name">Speed Roulette</div><div class="card-studio">Evolution</div></div></div>
+      <div class="card"><div class="card-img g5"><img src="games/6190b331-59c1-4123-a200-81d5994e56d6.avif" alt="Side Bet City"></div><div class="card-info"><div class="card-name">Side Bet City</div><div class="card-studio">Evolution</div></div></div>
+    </div></div>
+  </div>
+</div>
+
+<!-- ══ Mini Games Tab ══ -->
+<div class="tab-page" data-page="mini-games">
+  <div class="page-intro">
+    <div class="page-intro-title">Mini Games</div>
+    <div class="page-intro-sub">Quick play, instant wins</div>
+  </div>
+  <div class="prov-bar">
+    <div class="prov-search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg></div>
+    <div class="prov-logos">
+      <div class="prov-logo"><img src="providers/Mobile.png" alt="3 Oaks"></div>
+      <div class="prov-logo"><img src="providers/image 527.png" alt="SmartSoft"></div>
+      <div class="prov-logo"><img src="providers/Betgames.png" alt="Betgames"></div>
+      <div class="prov-logo"><img src="providers/image 509.png" alt="Bgaming"></div>
+    </div>
+  </div>
+  <div class="filters">
+    <div class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff6b35" stroke-width="2" stroke-linecap="round"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.07-2.14 0-5.5 3-7 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.15.5-2.5 1.5-3.5l1 1z"/></svg> Hot Games</div>
+    <div class="pill"><span class="pill-badge">NEW</span> New Games</div>
+    <div class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="8" width="18" height="13" rx="1"/><path d="M12 8v13"/><path d="M3 12h18"/></svg> Buy Bonus</div>
+  </div>
+  <div class="page-empty">
+    <div class="page-empty-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg>
+    </div>
+    <div class="page-empty-title">Coming Soon</div>
+    <div class="page-empty-sub">Mini games are being added</div>
+  </div>
+</div>
+
+<!-- ══ Poker Tab ══ -->
+<div class="tab-page" data-page="poker">
+  <div class="page-intro">
+    <div class="page-intro-title">Poker</div>
+    <div class="page-intro-sub">Texas Hold'em, Omaha & more</div>
+  </div>
+  <div class="prov-bar">
+    <div class="prov-search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg></div>
+    <div class="prov-logos">
+      <div class="prov-logo"><img src="providers/Mobile.png" alt="3 Oaks"></div>
+      <div class="prov-logo"><img src="providers/image 527.png" alt="SmartSoft"></div>
+      <div class="prov-logo"><img src="providers/Betgames.png" alt="Betgames"></div>
+      <div class="prov-logo"><img src="providers/image 509.png" alt="Bgaming"></div>
+    </div>
+  </div>
+  <div class="filters">
+    <div class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff6b35" stroke-width="2" stroke-linecap="round"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.07-2.14 0-5.5 3-7 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.15.5-2.5 1.5-3.5l1 1z"/></svg> Hot Games</div>
+    <div class="pill"><span class="pill-badge">NEW</span> New Games</div>
+    <div class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="8" width="18" height="13" rx="1"/><path d="M12 8v13"/><path d="M3 12h18"/></svg> Buy Bonus</div>
+  </div>
+  <div class="page-empty">
+    <div class="page-empty-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    </div>
+    <div class="page-empty-title">Coming Soon</div>
+    <div class="page-empty-sub">Poker rooms opening soon</div>
+  </div>
+</div>
+
+<!-- ══ View All Page ══ -->
+<div class="view-all-page" id="viewAllPage">
+  <div class="view-all-header">
+    <button class="view-all-back" id="viewAllBack">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="view-all-title" id="viewAllTitle">All Games</div>
+  </div>
+  <div class="view-all-body">
+    <div class="view-all-grid" id="viewAllGrid"></div>
+  </div>
+</div>
+
+<!-- ══ Bottom Nav ══ -->
+<nav class="bottom-nav">
+  <div class="nav-item active"><div class="nav-icon"><img src="nav-icons/home.svg" width="24" height="24"></div><span class="nav-label">Home</span></div>
+  <div class="nav-item"><div class="nav-icon"><img src="nav-icons/search.svg" width="24" height="24"></div><span class="nav-label">Search</span></div>
+  <div class="nav-item wallet-nav"><div class="nav-icon"><img src="nav-icons/wallet.svg" width="24" height="24"></div><span class="nav-label">Wallet</span></div>
+  <div class="nav-item"><div class="nav-icon"><img src="nav-icons/support.svg" width="24" height="24"></div><span class="nav-label">Support</span></div>
+  <div class="nav-item"><div class="nav-icon"><img src="nav-icons/profile.svg" width="24" height="24"></div><span class="nav-label">Profile</span></div>
+</nav>
+
+<!-- ══ Wallet Page ══ -->
+<div class="wallet-overlay" id="walletOverlay"></div>
+<div class="wallet-page" id="walletPage">
+  <div class="w-header">
+    <button class="w-back" id="walletClose">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="w-title">Wallet</div>
+    <div class="w-header-actions">
+      <button class="w-header-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="w-balance">
+    <div class="w-balance-label">Total Balance</div>
+    <div class="w-balance-row">
+      <div class="w-balance-amount">5,343.34</div>
+      <div class="w-balance-currency">USDT</div>
+    </div>
+    <div class="w-balance-usd">≈ $5,343.34 USD</div>
+  </div>
+
+  <div class="w-actions">
+    <button class="w-action deposit" id="walletDepositBtn">
+      <div class="w-action-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+      </div>
+      Deposit
+    </button>
+    <button class="w-action withdraw" id="walletWithdrawBtn">
+      <div class="w-action-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+      </div>
+      Withdraw
+    </button>
+    <button class="w-action swap">
+      <div class="w-action-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+      </div>
+      Swap
+    </button>
+  </div>
+
+  <div class="w-body">
+    <div class="w-section-label">Recent Transactions</div>
+    <div class="w-tx-list">
+      <div class="w-tx">
+        <div class="w-tx-icon in">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+        </div>
+        <div class="w-tx-info">
+          <div class="w-tx-title">Deposit</div>
+          <div class="w-tx-meta">Bitcoin · 2 min ago</div>
+        </div>
+        <div class="w-tx-right">
+          <div class="w-tx-amount green">+0.025 BTC</div>
+          <div class="w-tx-status">Confirmed</div>
+        </div>
+      </div>
+      <div class="w-tx">
+        <div class="w-tx-icon out">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        </div>
+        <div class="w-tx-info">
+          <div class="w-tx-title">Withdraw</div>
+          <div class="w-tx-meta">USDT · 1 hour ago</div>
+        </div>
+        <div class="w-tx-right">
+          <div class="w-tx-amount red">-500.00 USDT</div>
+          <div class="w-tx-status">Completed</div>
+        </div>
+      </div>
+      <div class="w-tx">
+        <div class="w-tx-icon bonus">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+        </div>
+        <div class="w-tx-info">
+          <div class="w-tx-title">Welcome Bonus</div>
+          <div class="w-tx-meta">Reward · Yesterday</div>
+        </div>
+        <div class="w-tx-right">
+          <div class="w-tx-amount yellow">+$50.00</div>
+          <div class="w-tx-status">Credited</div>
+        </div>
+      </div>
+      <div class="w-tx">
+        <div class="w-tx-icon in">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+        </div>
+        <div class="w-tx-info">
+          <div class="w-tx-title">Deposit</div>
+          <div class="w-tx-meta">Visa ••4242 · 2 days ago</div>
+        </div>
+        <div class="w-tx-right">
+          <div class="w-tx-amount green">+$1,200.00</div>
+          <div class="w-tx-status">Confirmed</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-section-label">Assets</div>
+    <div class="w-asset">
+      <div class="w-asset-icon" style="background:#f7931a;">₿</div>
+      <div class="w-asset-info">
+        <div class="w-asset-name">Bitcoin</div>
+        <div class="w-asset-ticker">BTC</div>
+      </div>
+      <div class="w-asset-right">
+        <div class="w-asset-bal">0.0521</div>
+        <div class="w-asset-usd">≈ $3,126.00</div>
+      </div>
+    </div>
+    <div class="w-asset">
+      <div class="w-asset-icon" style="background:#26a17b;">₮</div>
+      <div class="w-asset-info">
+        <div class="w-asset-name">Tether</div>
+        <div class="w-asset-ticker">USDT</div>
+      </div>
+      <div class="w-asset-right">
+        <div class="w-asset-bal">2,217.34</div>
+        <div class="w-asset-usd">≈ $2,217.34</div>
+      </div>
+    </div>
+    <div class="w-asset">
+      <div class="w-asset-icon" style="background:#627eea;">Ξ</div>
+      <div class="w-asset-info">
+        <div class="w-asset-name">Ethereum</div>
+        <div class="w-asset-ticker">ETH</div>
+      </div>
+      <div class="w-asset-right">
+        <div class="w-asset-bal">0.000</div>
+        <div class="w-asset-usd">≈ $0.00</div>
+      </div>
+    </div>
+    <div class="w-asset">
+      <div class="w-asset-icon" style="background:#9945ff;">◎</div>
+      <div class="w-asset-info">
+        <div class="w-asset-name">Solana</div>
+        <div class="w-asset-ticker">SOL</div>
+      </div>
+      <div class="w-asset-right">
+        <div class="w-asset-bal">0.000</div>
+        <div class="w-asset-usd">≈ $0.00</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ Deposit Sub-page ══ -->
+<div class="w-subpage" id="depositSubpage">
+  <div class="w-sub-header">
+    <button class="w-sub-back" id="depositBack">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="w-sub-title">Deposit</div>
+  </div>
+  <div class="w-sub-body">
+    <div class="w-amount-section">
+      <div class="w-amount-label">Amount</div>
+      <div class="w-amount-input-wrap">
+        <span class="w-amount-currency">$</span>
+        <input class="w-amount-input" type="number" placeholder="0.00" inputmode="decimal" id="depositAmountInput">
+      </div>
+      <div class="w-quick-amounts">
+        <button class="w-quick-btn" data-amount="50">$50</button>
+        <button class="w-quick-btn" data-amount="100">$100</button>
+        <button class="w-quick-btn" data-amount="250">$250</button>
+        <button class="w-quick-btn" data-amount="500">$500</button>
+      </div>
+    </div>
+
+    <div class="w-method-label">Payment Method</div>
+    <div class="w-methods">
+      <button class="w-method-pill active" data-method="crypto">
+        <div class="w-method-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M9.5 8h4c1.1 0 2 .9 2 2s-.9 2-2 2h-4"/><path d="M9.5 12h4.5c1.1 0 2 .9 2 2s-.9 2-2 2H9.5"/><path d="M11 7v2m0 6v2m2-10v2m0 6v2"/></svg>
+        </div>
+        <div class="w-method-name">Crypto</div>
+      </button>
+      <button class="w-method-pill" data-method="card">
+        <div class="w-method-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5b9bd5" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        </div>
+        <div class="w-method-name">Card</div>
+      </button>
+      <button class="w-method-pill" data-method="bank">
+        <div class="w-method-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="1.5"><path d="M3 21h18"/><path d="M3 10h18"/><path d="M12 3l9 7H3l9-7z"/><path d="M5 10v8m4-8v8m6-8v8m4-8v8"/></svg>
+        </div>
+        <div class="w-method-name">Bank</div>
+      </button>
+    </div>
+
+    <div class="w-method-detail" id="depositMethodDetail">
+      <!-- Crypto panel -->
+      <div class="w-method-panel active" data-panel="crypto">
+        <div class="coin-selector">
+          <button class="coin-option active" data-coin="BTC"><span class="coin-icon btc">₿</span>BTC</button>
+          <button class="coin-option" data-coin="ETH"><span class="coin-icon eth">Ξ</span>ETH</button>
+          <button class="coin-option" data-coin="USDT"><span class="coin-icon usdt">₮</span>USDT</button>
+          <button class="coin-option" data-coin="SOL"><span class="coin-icon sol">◎</span>SOL</button>
+          <button class="coin-option" data-coin="BNB"><span class="coin-icon bnb">B</span>BNB</button>
+          <button class="coin-option" data-coin="XRP"><span class="coin-icon xrp">✕</span>XRP</button>
+        </div>
+        <div class="network-section">
+          <div class="network-section-label">Select Network</div>
+          <div class="network-options">
+            <button class="network-option active" data-network="bitcoin">Bitcoin</button>
+          </div>
+        </div>
+        <div class="address-section">
+          <div class="address-section-label">Deposit Address</div>
+          <div class="qr-placeholder">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/></svg>
+          </div>
+          <div class="address-box">
+            <span class="address-text">bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</span>
+            <button class="copy-btn">Copy</button>
+          </div>
+          <div class="deposit-min">Min deposit: 0.0001 BTC</div>
+        </div>
+        <div class="fee-note">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>
+          Network fee applies. Confirmations: 2
+        </div>
+      </div>
+
+      <!-- Card panel -->
+      <div class="w-method-panel" data-panel="card">
+        <div class="saved-cards">
+          <div class="saved-card active" data-card="saved-1">
+            <div class="saved-card-brand brand-visa">VISA</div>
+            <div class="saved-card-info">
+              <div class="saved-card-number">•••• •••• •••• 4242</div>
+              <div class="saved-card-expiry">Expires 09/27</div>
+            </div>
+            <div class="saved-card-radio"></div>
+          </div>
+          <div class="saved-card" data-card="saved-2">
+            <div class="saved-card-brand brand-mc">MC</div>
+            <div class="saved-card-info">
+              <div class="saved-card-number">•••• •••• •••• 8831</div>
+              <div class="saved-card-expiry">Expires 03/26</div>
+            </div>
+            <div class="saved-card-radio"></div>
+          </div>
+        </div>
+        <button class="add-new-card" id="addNewCardDeposit">
+          <span class="plus-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
+          Add new card
+        </button>
+        <div class="new-card-form" id="newCardFormDeposit">
+          <div class="card-fields">
+            <div>
+              <div class="field-label">Card Number</div>
+              <input class="field-input" type="text" placeholder="1234 5678 9012 3456" maxlength="19" inputmode="numeric">
+            </div>
+            <div class="card-row">
+              <div style="flex:1">
+                <div class="field-label">Expiry</div>
+                <input class="field-input" type="text" placeholder="MM/YY" maxlength="5">
+              </div>
+              <div style="flex:1">
+                <div class="field-label">CVV</div>
+                <input class="field-input" type="text" placeholder="123" maxlength="4" inputmode="numeric">
+              </div>
+            </div>
+            <div>
+              <div class="field-label">Cardholder Name</div>
+              <input class="field-input" type="text" placeholder="John Doe">
+            </div>
+          </div>
+        </div>
+        <div class="fee-note">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>
+          2.5% processing fee. Instant deposit.
+        </div>
+      </div>
+
+      <!-- Bank panel -->
+      <div class="w-method-panel" data-panel="bank">
+        <div class="bank-info-row">
+          <span class="bank-info-label">Bank Name</span>
+          <span class="bank-info-value">MYBC Finance Ltd</span>
+        </div>
+        <div class="bank-info-row">
+          <span class="bank-info-label">IBAN</span>
+          <span class="bank-info-value">GB29 NWBK 6016 1331</span>
+        </div>
+        <div class="bank-info-row">
+          <span class="bank-info-label">SWIFT / BIC</span>
+          <span class="bank-info-value">MYBCGB2L</span>
+        </div>
+        <div class="bank-info-row">
+          <span class="bank-info-label">Reference</span>
+          <span class="bank-info-value">DEP-83921</span>
+        </div>
+        <div class="fee-note">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>
+          No fee. Credited within 1-2 business days.
+        </div>
+      </div>
+    </div>
+
+    <button class="drawer-submit" id="depositSubmitBtn">Deposit Now</button>
+  </div>
+</div>
+
+<!-- ══ Withdraw Sub-page ══ -->
+<div class="w-subpage" id="withdrawSubpage">
+  <div class="w-sub-header">
+    <button class="w-sub-back" id="withdrawBack">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="w-sub-title">Withdraw</div>
+  </div>
+  <div class="w-sub-body">
+    <div class="w-amount-section">
+      <div class="w-amount-label">Amount</div>
+      <div class="w-amount-input-wrap">
+        <span class="w-amount-currency">$</span>
+        <input class="w-amount-input" type="number" placeholder="0.00" inputmode="decimal" id="withdrawAmountInput">
+      </div>
+      <div class="w-quick-amounts">
+        <button class="w-quick-btn" data-amount="50">$50</button>
+        <button class="w-quick-btn" data-amount="100">$100</button>
+        <button class="w-quick-btn" data-amount="500">$500</button>
+        <button class="w-quick-btn" data-amount="all">All</button>
+      </div>
+    </div>
+
+    <div class="w-method-label">Withdraw To</div>
+    <div class="w-methods">
+      <button class="w-method-pill active" data-method="crypto">
+        <div class="w-method-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M9.5 8h4c1.1 0 2 .9 2 2s-.9 2-2 2h-4"/><path d="M9.5 12h4.5c1.1 0 2 .9 2 2s-.9 2-2 2H9.5"/><path d="M11 7v2m0 6v2m2-10v2m0 6v2"/></svg>
+        </div>
+        <div class="w-method-name">Crypto</div>
+      </button>
+      <button class="w-method-pill" data-method="card">
+        <div class="w-method-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5b9bd5" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        </div>
+        <div class="w-method-name">Card</div>
+      </button>
+      <button class="w-method-pill" data-method="bank">
+        <div class="w-method-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="1.5"><path d="M3 21h18"/><path d="M3 10h18"/><path d="M12 3l9 7H3l9-7z"/><path d="M5 10v8m4-8v8m6-8v8m4-8v8"/></svg>
+        </div>
+        <div class="w-method-name">Bank</div>
+      </button>
+    </div>
+
+    <div class="w-method-detail" id="withdrawMethodDetail">
+      <!-- Crypto panel -->
+      <div class="w-method-panel active" data-panel="crypto">
+        <div class="coin-selector">
+          <button class="coin-option active" data-coin="BTC"><span class="coin-icon btc">₿</span>BTC</button>
+          <button class="coin-option" data-coin="ETH"><span class="coin-icon eth">Ξ</span>ETH</button>
+          <button class="coin-option" data-coin="USDT"><span class="coin-icon usdt">₮</span>USDT</button>
+          <button class="coin-option" data-coin="SOL"><span class="coin-icon sol">◎</span>SOL</button>
+          <button class="coin-option" data-coin="BNB"><span class="coin-icon bnb">B</span>BNB</button>
+          <button class="coin-option" data-coin="XRP"><span class="coin-icon xrp">✕</span>XRP</button>
+        </div>
+        <div class="network-section">
+          <div class="network-section-label">Select Network</div>
+          <div class="network-options">
+            <button class="network-option active" data-network="bitcoin">Bitcoin</button>
+          </div>
+        </div>
+        <div>
+          <div class="field-label">Wallet Address</div>
+          <input class="field-input wallet-addr-input" type="text" placeholder="Enter your BTC wallet address">
+        </div>
+        <div class="fee-note">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>
+          Network fee: ~0.0002 BTC. Processed within 30 min.
+        </div>
+      </div>
+
+      <!-- Card panel -->
+      <div class="w-method-panel" data-panel="card">
+        <div class="saved-cards">
+          <div class="saved-card active" data-card="saved-1">
+            <div class="saved-card-brand brand-visa">VISA</div>
+            <div class="saved-card-info">
+              <div class="saved-card-number">•••• •••• •••• 4242</div>
+              <div class="saved-card-expiry">Expires 09/27</div>
+            </div>
+            <div class="saved-card-radio"></div>
+          </div>
+          <div class="saved-card" data-card="saved-2">
+            <div class="saved-card-brand brand-mc">MC</div>
+            <div class="saved-card-info">
+              <div class="saved-card-number">•••• •••• •••• 8831</div>
+              <div class="saved-card-expiry">Expires 03/26</div>
+            </div>
+            <div class="saved-card-radio"></div>
+          </div>
+        </div>
+        <div class="fee-note">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>
+          No fee. Refund takes 3-5 business days.
+        </div>
+      </div>
+
+      <!-- Bank panel -->
+      <div class="w-method-panel" data-panel="bank">
+        <div>
+          <div class="field-label">Account Holder Name</div>
+          <input class="field-input" type="text" placeholder="Full name on bank account">
+        </div>
+        <div>
+          <div class="field-label">IBAN / Account Number</div>
+          <input class="field-input" type="text" placeholder="GB29 NWBK 6016 1331 9268 19">
+        </div>
+        <div>
+          <div class="field-label">SWIFT / BIC Code</div>
+          <input class="field-input" type="text" placeholder="NWBKGB2L">
+        </div>
+        <div>
+          <div class="field-label">Bank Name</div>
+          <input class="field-input" type="text" placeholder="e.g. Barclays, Chase">
+        </div>
+        <div class="fee-note">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>
+          No fee. Credited within 1-3 business days.
+        </div>
+      </div>
+    </div>
+
+    <button class="drawer-submit withdraw-btn" id="withdrawSubmitBtn">Withdraw</button>
+  </div>
+</div>
+
+<script>
+  // ══ Tab page switching ══
+  const tabPageMap = {
+    'Slots': 'slots',
+    'Sports': 'sports',
+    'Crash Games': 'crash-games',
+    'Live Casino': 'live-casino',
+    'Mini Games': 'mini-games',
+    'Poker': 'poker'
+  };
+
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      // Update active tab
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      // Get tab text (strip icon text)
+      const tabText = tab.textContent.trim();
+      const pageId = tabPageMap[tabText];
+
+      // Switch tab page
+      document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
+      const targetPage = document.querySelector(`.tab-page[data-page="${pageId}"]`);
+      if (targetPage) targetPage.classList.add('active');
+
+      // Scroll to top of content
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+
+  // ══ Page category pills ══
+  document.querySelectorAll('.page-cat').forEach(cat => {
+    cat.addEventListener('click', () => {
+      const wrap = cat.closest('.page-cats');
+      wrap.querySelectorAll('.page-cat').forEach(c => c.classList.remove('active'));
+      cat.classList.add('active');
+    });
+  });
+
+  // ══ View All page ══
+  const viewAllPage = document.getElementById('viewAllPage');
+  const viewAllGrid = document.getElementById('viewAllGrid');
+  const viewAllTitle = document.getElementById('viewAllTitle');
+
+  document.querySelectorAll('.s-link').forEach(link => {
+    link.addEventListener('click', () => {
+      const section = link.closest('.section');
+      const title = section.querySelector('.s-title').textContent;
+      const cards = section.querySelectorAll('.card');
+
+      viewAllTitle.textContent = title;
+      viewAllGrid.innerHTML = '';
+
+      cards.forEach(card => {
+        viewAllGrid.appendChild(card.cloneNode(true));
+      });
+
+      viewAllPage.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  document.getElementById('viewAllBack').addEventListener('click', () => {
+    viewAllPage.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+
+  // ══ Wallet Page Logic ══
+  const walletPage = document.getElementById('walletPage');
+  const walletOverlay = document.getElementById('walletOverlay');
+  const depositSubpage = document.getElementById('depositSubpage');
+  const withdrawSubpage = document.getElementById('withdrawSubpage');
+
+  const coinData = {
+    BTC: {
+      networks: [{ name: 'Bitcoin', id: 'bitcoin' }],
+      address: { bitcoin: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh' },
+      min: '0.0001 BTC', fee: '~0.0002 BTC', confirms: 2
+    },
+    ETH: {
+      networks: [{ name: 'Ethereum (ERC-20)', id: 'erc20' }],
+      address: { erc20: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F' },
+      min: '0.005 ETH', fee: '~0.001 ETH', confirms: 12
+    },
+    USDT: {
+      networks: [
+        { name: 'Tron (TRC-20)', id: 'trc20' },
+        { name: 'Ethereum (ERC-20)', id: 'erc20' },
+        { name: 'BSC (BEP-20)', id: 'bep20' }
+      ],
+      address: {
+        trc20: 'TN2Y3cZfL8VoUqPt4t3G6dRwqVhCj7KDLQ',
+        erc20: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F',
+        bep20: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F'
+      },
+      min: '10 USDT', fee: '1 USDT', confirms: 1
+    },
+    SOL: {
+      networks: [{ name: 'Solana', id: 'solana' }],
+      address: { solana: '7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU' },
+      min: '0.1 SOL', fee: '~0.01 SOL', confirms: 1
+    },
+    BNB: {
+      networks: [
+        { name: 'BSC (BEP-20)', id: 'bep20' },
+        { name: 'BNB Beacon', id: 'beacon' }
+      ],
+      address: {
+        bep20: '0xaB5801a7D398351b8bE11C439e05C5B3259aeC9B',
+        beacon: 'bnb1grpf0955h0ber7ng49w56rty7nqjh4ct63dqvm'
+      },
+      min: '0.01 BNB', fee: '~0.0005 BNB', confirms: 1
+    },
+    XRP: {
+      networks: [{ name: 'XRP Ledger', id: 'xrpl' }],
+      address: { xrpl: 'rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe' },
+      min: '10 XRP', fee: '0.25 XRP', confirms: 1, memo: '2847391'
+    }
+  };
+
+  // Open/close wallet page
+  function openWallet() {
+    walletOverlay.classList.add('open');
+    walletPage.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeWallet() {
+    walletOverlay.classList.remove('open');
+    walletPage.classList.remove('open');
+    depositSubpage.classList.remove('open');
+    withdrawSubpage.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelector('.wallet-btn').addEventListener('click', openWallet);
+  document.querySelector('.wallet-nav').addEventListener('click', openWallet);
+  document.querySelector('.add-btn').addEventListener('click', (e) => { e.stopPropagation(); openWallet(); });
+  walletOverlay.addEventListener('click', closeWallet);
+  document.getElementById('walletClose').addEventListener('click', closeWallet);
+
+  // Sub-page open/close
+  document.getElementById('walletDepositBtn').addEventListener('click', () => {
+    depositSubpage.classList.add('open');
+  });
+  document.getElementById('walletWithdrawBtn').addEventListener('click', () => {
+    withdrawSubpage.classList.add('open');
+  });
+  document.getElementById('depositBack').addEventListener('click', () => {
+    depositSubpage.classList.remove('open');
+  });
+  document.getElementById('withdrawBack').addEventListener('click', () => {
+    withdrawSubpage.classList.remove('open');
+  });
+
+  // Quick amount buttons (new wallet)
+  document.querySelectorAll('.w-quick-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const section = btn.closest('.w-amount-section');
+      const input = section.querySelector('.w-amount-input');
+      const val = btn.dataset.amount;
+      input.value = val === 'all' ? '5343.34' : val;
+    });
+  });
+
+  // Method pill switching
+  document.querySelectorAll('.w-methods').forEach(container => {
+    container.querySelectorAll('.w-method-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        container.querySelectorAll('.w-method-pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        const detail = container.nextElementSibling;
+        if (detail) {
+          detail.querySelectorAll('.w-method-panel').forEach(p => p.classList.remove('active'));
+          const target = detail.querySelector(`[data-panel="${pill.dataset.method}"]`);
+          if (target) target.classList.add('active');
+        }
+      });
+    });
+  });
+
+  // Coin selector with network + address updates
+  function updateCoinDetails(panel, ticker, isDeposit) {
+    const data = coinData[ticker];
+    if (!data) return;
+
+    const networkOpts = panel.querySelector('.network-options');
+    if (networkOpts) {
+      networkOpts.innerHTML = data.networks.map((n, i) =>
+        `<button class="network-option${i === 0 ? ' active' : ''}" data-network="${n.id}">${n.name}</button>`
+      ).join('');
+      networkOpts.querySelectorAll('.network-option').forEach(btn => {
+        btn.addEventListener('click', () => {
+          networkOpts.querySelectorAll('.network-option').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          if (isDeposit) {
+            const addrEl = panel.querySelector('.address-text');
+            if (addrEl) addrEl.textContent = data.address[btn.dataset.network] || '';
+          }
+        });
+      });
+    }
+
+    if (isDeposit) {
+      const addrEl = panel.querySelector('.address-text');
+      const firstNet = data.networks[0].id;
+      if (addrEl) addrEl.textContent = data.address[firstNet] || '';
+      const minEl = panel.querySelector('.deposit-min');
+      if (minEl) minEl.textContent = 'Min deposit: ' + data.min;
+      const feeEl = panel.querySelector('.fee-note');
+      if (feeEl) {
+        feeEl.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>
+        Network fee applies. Confirmations: ${data.confirms}`;
+      }
+    } else {
+      const addrInput = panel.querySelector('.wallet-addr-input');
+      if (addrInput) addrInput.placeholder = 'Enter your ' + ticker + ' wallet address';
+      const feeEl = panel.querySelector('.fee-note');
+      if (feeEl) {
+        feeEl.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>
+        Network fee: ${data.fee}. Processed within 30 min.`;
+      }
+    }
+  }
+
+  document.querySelectorAll('.coin-option').forEach(coin => {
+    coin.addEventListener('click', () => {
+      const selector = coin.closest('.coin-selector');
+      const panel = coin.closest('.w-method-panel');
+      const ticker = coin.dataset.coin;
+      const isDeposit = !!panel.closest('#depositSubpage');
+
+      selector.querySelectorAll('.coin-option').forEach(c => c.classList.remove('active'));
+      coin.classList.add('active');
+      updateCoinDetails(panel, ticker, isDeposit);
+    });
+  });
+
+  // Saved card selection
+  document.querySelectorAll('.saved-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const container = card.closest('.saved-cards');
+      container.querySelectorAll('.saved-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      const form = card.closest('.w-method-panel').querySelector('.new-card-form');
+      if (form) form.classList.remove('show');
+    });
+  });
+
+  // Add new card toggle
+  document.querySelectorAll('.add-new-card').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const form = btn.nextElementSibling;
+      if (form) {
+        form.classList.toggle('show');
+        if (form.classList.contains('show')) {
+          const cards = btn.closest('.w-method-panel').querySelectorAll('.saved-card');
+          cards.forEach(c => c.classList.remove('active'));
+        }
+      }
+    });
+  });
+
+  // Copy button
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const address = btn.closest('.address-box').querySelector('.address-text').textContent;
+      navigator.clipboard.writeText(address).then(() => {
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
