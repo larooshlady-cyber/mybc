@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>MYBC - Rewards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  * { -webkit-tap-highlight-color: transparent; }
+  ::-webkit-scrollbar { display: none; }
+  * { scrollbar-width: none; }
+
+  :root {
+    --bg-base: #09071a;
+    --bg-card: #110e24;
+    --yellow: #FBCE04;
+    --green: #0ECC68;
+    --purple: #9b7aff;
+    --sky: #38bdf8;
+    --white: #f0edf8;
+    --text-sec: #b0aac6;
+    --text-dim: #7d7898;
+    --border: rgba(255,255,255,0.06);
+    --border-c: rgba(255,255,255,0.08);
+    --r: 12px;
+  }
+
+  html, body { background: var(--bg-base); }
+  body {
+    font-family: 'Inter', sans-serif;
+    color: var(--white);
+    max-width: 430px;
+    margin: 0 auto;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    padding-bottom: 24px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 16px; position: sticky; top: 0; z-index: 100;
+    background: var(--bg-base); border-bottom: 1px solid var(--border);
+  }
+  .logo { background: var(--yellow); border-radius: 8px; padding: 6px 10px; font-weight: 900; font-size: 13px; color: #000; letter-spacing: 1px; }
+  .back-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: rgba(255,255,255,0.04); border: 1px solid var(--border-c); color: var(--text-sec); font-size: 16px; cursor: pointer; }
+
+  .section { padding: 0 16px; margin-bottom: 16px; }
+  .section-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+
+  /* Stats */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; padding: 16px 16px 0; margin-bottom: 16px; }
+  .stat { background: var(--bg-card); border: 1px solid var(--border-c); border-radius: var(--r); padding: 10px 8px; text-align: center; }
+  .stat .v { font-size: 15px; font-weight: 800; margin-bottom: 1px; }
+  .stat .l { font-size: 10px; color: var(--text-dim); }
+
+  /* Claim cards — side by side */
+  .claim-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .claim-card {
+    background: var(--bg-card); border-radius: var(--r); padding: 14px;
+    position: relative; overflow: hidden;
+  }
+  .claim-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+  .claim-card.casino { border: 1px solid rgba(14,204,104,0.15); }
+  .claim-card.casino::before { background: var(--green); }
+  .claim-card.sport { border: 1px solid rgba(56,189,248,0.15); }
+  .claim-card.sport::before { background: var(--sky); }
+  .claim-label { font-size: 12px; font-weight: 600; color: var(--text-sec); margin-bottom: 2px; }
+  .claim-sub { font-size: 10px; color: var(--text-dim); margin-bottom: 10px; }
+  .claim-val { font-size: 22px; font-weight: 900; margin-bottom: 10px; }
+  .claim-rate { font-size: 11px; font-weight: 700; color: var(--text-dim); margin-bottom: 10px; }
+  .claim-rate span { color: var(--white); }
+  .claim-btn {
+    width: 100%; padding: 8px; border: none; border-radius: 8px;
+    font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer; color: #000;
+  }
+
+  /* Bonus rows */
+  .bonus-list { display: flex; flex-direction: column; gap: 6px; }
+  .bonus-row {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--bg-card); border: 1px solid var(--border-c);
+    border-radius: var(--r); padding: 10px 12px;
+  }
+  .bonus-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .bonus-name { flex: 1; font-size: 13px; font-weight: 600; }
+  .bonus-desc { font-size: 10px; color: var(--text-dim); }
+  .bonus-amt { font-size: 14px; font-weight: 800; text-align: right; }
+  .bonus-tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; text-align: right; }
+  .tag-ready { color: var(--green); }
+  .tag-wait { color: var(--text-dim); }
+
+  /* Level-up */
+  .levelup-row { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; }
+  .lv-card {
+    flex: 0 0 90px; background: var(--bg-card); border: 1px solid var(--border-c);
+    border-radius: var(--r); padding: 10px 8px; text-align: center;
+  }
+  .lv-card.done { border-color: rgba(251,206,4,0.2); background: rgba(251,206,4,0.03); }
+  .lv-dot { width: 10px; height: 10px; border-radius: 50%; margin: 0 auto 6px; }
+  .lv-tier { font-size: 11px; font-weight: 700; margin-bottom: 2px; }
+  .lv-card.done .lv-tier { color: var(--yellow); }
+  .lv-amt { font-size: 15px; font-weight: 900; }
+  .lv-check { font-size: 10px; color: var(--yellow); margin-top: 4px; }
+
+  /* Leaderboard */
+  .lb-tabs { display: flex; gap: 4px; margin-bottom: 8px; }
+  .lb-tab {
+    flex: 1; padding: 6px; border: 1px solid var(--border-c); border-radius: 8px;
+    background: transparent; color: var(--text-dim); font-family: inherit;
+    font-size: 12px; font-weight: 600; cursor: pointer; text-align: center;
+  }
+  .lb-tab.active { background: rgba(155,122,255,0.1); border-color: rgba(155,122,255,0.25); color: var(--purple); }
+  .lb-pool {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 10px; background: rgba(155,122,255,0.05); border: 1px solid rgba(155,122,255,0.12);
+    border-radius: var(--r); margin-bottom: 8px;
+  }
+  .lb-pool .pl { font-size: 11px; color: var(--text-dim); }
+  .lb-pool .pv { font-size: 18px; font-weight: 900; color: var(--purple); }
+  .lb-list { display: flex; flex-direction: column; gap: 4px; }
+  .lb-row {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px; background: var(--bg-card); border: 1px solid var(--border-c); border-radius: 8px;
+  }
+  .lb-row.you { border-color: rgba(251,206,4,0.15); background: rgba(251,206,4,0.03); }
+  .lb-r { width: 20px; font-size: 13px; font-weight: 800; text-align: center; flex-shrink: 0; }
+  .lb-r.g { color: #ffd700; } .lb-r.s { color: #c0c0c0; } .lb-r.b { color: #cd7f32; }
+  .lb-n { flex: 1; font-size: 12px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .lb-n .yt { font-size: 8px; font-weight: 700; background: var(--yellow); color: #000; padding: 1px 4px; border-radius: 3px; margin-left: 4px; vertical-align: middle; }
+  .lb-w { font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  .lb-p { font-size: 12px; font-weight: 700; color: var(--green); flex-shrink: 0; min-width: 50px; text-align: right; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">MYBC</div>
+  <div class="back-btn">&larr;</div>
+</div>
+
+<!-- Stats -->
+<div class="stats">
+  <div class="stat"><div class="v" style="color:var(--green)">$127</div><div class="l">Claimed</div></div>
+  <div class="stat"><div class="v" style="color:var(--yellow)">$14.20</div><div class="l">Available</div></div>
+  <div class="stat"><div class="v" style="color:var(--purple)">Bronze</div><div class="l">Tier</div></div>
+  <div class="stat"><div class="v" style="color:var(--sky)">2,340</div><div class="l">XP</div></div>
+</div>
+
+<!-- Rakeback + Sports Cashback -->
+<div class="section">
+  <div class="section-title">Rakeback & Cashback</div>
+  <div class="claim-row">
+    <div class="claim-card casino">
+      <div class="claim-label">Casino Rakeback</div>
+      <div class="claim-rate">Rate: <span>5%</span></div>
+      <div class="claim-val" style="color:var(--green)">$3.82</div>
+      <button class="claim-btn" style="background:var(--green)">Claim</button>
+    </div>
+    <div class="claim-card sport">
+      <div class="claim-label">Sports Cashback</div>
+      <div class="claim-rate">Rate: <span>5%</span></div>
+      <div class="claim-val" style="color:var(--sky)">$1.44</div>
+      <button class="claim-btn" style="background:var(--sky)">Claim</button>
+    </div>
+  </div>
+</div>
+
+<!-- Bonuses -->
+<div class="section">
+  <div class="section-title">Bonuses</div>
+  <div class="bonus-list">
+    <div class="bonus-row">
+      <div class="bonus-dot" style="background:var(--yellow)"></div>
+      <div style="flex:1">
+        <div class="bonus-name">Hourly Cashback</div>
+        <div class="bonus-desc">Every hour based on play</div>
+      </div>
+      <div>
+        <div class="bonus-amt" style="color:var(--yellow)">$0.45</div>
+        <div class="bonus-tag tag-ready">Ready</div>
+      </div>
+    </div>
+    <div class="bonus-row">
+      <div class="bonus-dot" style="background:var(--green)"></div>
+      <div style="flex:1">
+        <div class="bonus-name">Daily Bonus</div>
+        <div class="bonus-desc">Once every 24 hours</div>
+      </div>
+      <div>
+        <div class="bonus-amt" style="color:var(--green)">$2.15</div>
+        <div class="bonus-tag tag-ready">Ready</div>
+      </div>
+    </div>
+    <div class="bonus-row">
+      <div class="bonus-dot" style="background:var(--sky)"></div>
+      <div style="flex:1">
+        <div class="bonus-name">Weekly Bonus</div>
+        <div class="bonus-desc">Based on 7-day volume</div>
+      </div>
+      <div>
+        <div class="bonus-amt" style="color:var(--sky)">$8.23</div>
+        <div class="bonus-tag tag-ready">Ready</div>
+      </div>
+    </div>
+    <div class="bonus-row">
+      <div class="bonus-dot" style="background:var(--purple)"></div>
+      <div style="flex:1">
+        <div class="bonus-name">Reload</div>
+        <div class="bonus-desc">Drops every 8 hours</div>
+      </div>
+      <div>
+        <div class="bonus-amt" style="color:var(--purple)">$1.80</div>
+        <div class="bonus-tag tag-wait">5h 23m</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Level-Up -->
+<div class="section">
+  <div class="section-title">Level-Up Rewards</div>
+  <div class="levelup-row">
+    <div class="lv-card done">
+      <div class="lv-dot" style="background:#cd7f32"></div>
+      <div class="lv-tier">Bronze</div>
+      <div class="lv-amt">$5</div>
+      <div class="lv-check">&#10003;</div>
+    </div>
+    <div class="lv-card">
+      <div class="lv-dot" style="background:#c0c0c0"></div>
+      <div class="lv-tier">Silver</div>
+      <div class="lv-amt">$25</div>
+    </div>
+    <div class="lv-card">
+      <div class="lv-dot" style="background:#ffd700"></div>
+      <div class="lv-tier">Gold</div>
+      <div class="lv-amt">$100</div>
+    </div>
+    <div class="lv-card">
+      <div class="lv-dot" style="background:#e5e4e2"></div>
+      <div class="lv-tier">Platinum</div>
+      <div class="lv-amt">$500</div>
+    </div>
+    <div class="lv-card">
+      <div class="lv-dot" style="background:linear-gradient(135deg,#38bdf8,#9b7aff)"></div>
+      <div class="lv-tier">Diamond</div>
+      <div class="lv-amt">$2,500</div>
+    </div>
+  </div>
+</div>
+
+<!-- Leaderboard -->
+<div class="section">
+  <div class="section-title">Leaderboard</div>
+  <div class="lb-tabs">
+    <button class="lb-tab active">Daily</button>
+    <button class="lb-tab">Weekly</button>
+    <button class="lb-tab">Monthly</button>
+  </div>
+  <div class="lb-pool">
+    <span class="pl">Prize Pool</span>
+    <span class="pv">$5,000</span>
+  </div>
+  <div class="lb-list">
+    <div class="lb-row"><div class="lb-r g">1</div><div class="lb-n">high_roller_99</div><div class="lb-w">$284K</div><div class="lb-p">$1,500</div></div>
+    <div class="lb-row"><div class="lb-r s">2</div><div class="lb-n">cryptoking</div><div class="lb-w">$196K</div><div class="lb-p">$1,000</div></div>
+    <div class="lb-row"><div class="lb-r b">3</div><div class="lb-n">luckyspin_42</div><div class="lb-w">$143K</div><div class="lb-p">$750</div></div>
+    <div class="lb-row"><div class="lb-r">4</div><div class="lb-n">betmaster_pro</div><div class="lb-w">$98K</div><div class="lb-p">$500</div></div>
+    <div class="lb-row"><div class="lb-r">5</div><div class="lb-n">slot_wizard</div><div class="lb-w">$71K</div><div class="lb-p">$300</div></div>
+    <div class="lb-row you"><div class="lb-r">38</div><div class="lb-n">You <span class="yt">YOU</span></div><div class="lb-w">$2.3K</div><div class="lb-p">--</div></div>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.lb-tab').forEach(t => t.addEventListener('click', () => {
+  document.querySelectorAll('.lb-tab').forEach(x => x.classList.remove('active'));
+  t.classList.add('active');
+}));
+</script>
+</body>
+</html>

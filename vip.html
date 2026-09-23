@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>MYBC - VIP Club</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  * { -webkit-tap-highlight-color: transparent; }
+  ::-webkit-scrollbar { display: none; }
+  * { scrollbar-width: none; }
+
+  :root {
+    --bg-base: #09071a;
+    --bg-card: #110e24;
+    --bg-surface: rgba(18,15,38,0.9);
+    --yellow: #FBCE04;
+    --green: #0ECC68;
+    --red: #ef4060;
+    --purple: #9b7aff;
+    --sky: #38bdf8;
+    --orange: #ff6b35;
+    --white: #f0edf8;
+    --text-sec: #b0aac6;
+    --text-dim: #7d7898;
+    --border: rgba(255,255,255,0.06);
+    --border-component: rgba(255,255,255,0.08);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-full: 50px;
+  }
+
+  html, body { background: var(--bg-base); }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    color: var(--white);
+    max-width: 430px;
+    margin: 0 auto;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    padding-bottom: 100px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg-base);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo {
+    background: var(--yellow);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    font-weight: 900;
+    font-size: 14px;
+    color: #000;
+    letter-spacing: 1.2px;
+  }
+  .back-btn {
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-sm);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border-component);
+    color: var(--text-sec);
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  /* ── HERO ── */
+  .vip-hero {
+    padding: 32px 16px 24px;
+    text-align: center;
+    background: linear-gradient(180deg, rgba(155,122,255,0.08) 0%, transparent 100%);
+  }
+  .vip-hero-icon {
+    width: 64px; height: 64px;
+    margin: 0 auto 16px;
+    background: linear-gradient(135deg, var(--yellow) 0%, #ff9500 100%);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+  }
+  .vip-hero h1 {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .vip-hero p {
+    font-size: 13px;
+    color: var(--text-sec);
+    line-height: 1.5;
+  }
+
+  /* ── CURRENT TIER ── */
+  .section { padding: 0 16px; margin-bottom: 24px; }
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: 0.3px;
+  }
+
+  .current-tier-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-component);
+    border-radius: var(--radius-md);
+    padding: 20px;
+  }
+  .tier-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px 4px 6px;
+    border-radius: var(--radius-full);
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .tier-badge .dot {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+  }
+  .tier-bronze { background: rgba(205,127,50,0.15); color: #cd7f32; }
+  .tier-bronze .dot { background: #cd7f32; color: #000; }
+
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+  .progress-info span { font-size: 12px; color: var(--text-dim); }
+  .progress-info strong { font-size: 14px; font-weight: 700; color: var(--yellow); }
+
+  .progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--yellow), #ff9500);
+    transition: width 0.6s ease;
+  }
+  .progress-label {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .progress-label strong { color: var(--white); font-weight: 600; }
+
+  /* ── TIER TABLE ── */
+  .tier-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-component);
+  }
+  .tier-table thead th {
+    background: rgba(255,255,255,0.04);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .tier-table thead th:not(:last-child),
+  .tier-table tbody td:not(:last-child) {
+    border-right: 1px solid var(--border);
+  }
+  .tier-table tbody td {
+    padding: 12px;
+    font-size: 13px;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .tier-table tbody tr:last-child td { border-bottom: none; }
+
+  .tier-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+  }
+  .tier-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .tier-table tbody tr.active-row td {
+    background: rgba(251,206,4,0.06);
+  }
+  .active-tag {
+    font-size: 9px;
+    font-weight: 700;
+    background: var(--yellow);
+    color: #000;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── BENEFITS ── */
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .benefit-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-component);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    text-align: center;
+  }
+  .benefit-icon {
+    width: 40px; height: 40px;
+    margin: 0 auto 10px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .benefit-icon.blue { background: rgba(56,189,248,0.12); }
+  .benefit-icon.green { background: rgba(14,204,104,0.12); }
+  .benefit-icon.purple { background: rgba(155,122,255,0.12); }
+  .benefit-icon.yellow { background: rgba(251,206,4,0.12); }
+
+  .benefit-card h4 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .benefit-card p {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.4;
+  }
+
+  /* ── HOW IT WORKS ── */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .step {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    background: var(--bg-card);
+    border: 1px solid var(--border-component);
+    border-radius: var(--radius-md);
+    padding: 16px;
+  }
+  .step-num {
+    width: 32px; height: 32px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: rgba(155,122,255,0.15);
+    color: var(--purple);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    font-weight: 800;
+  }
+  .step-text h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .step-text p { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+  /* ── RULES ── */
+  .rules-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .rules-list li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 13px;
+    color: var(--text-sec);
+    line-height: 1.5;
+    padding: 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-component);
+    border-radius: var(--radius-sm);
+  }
+  .rules-list li .bullet {
+    width: 6px; height: 6px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--purple);
+    margin-top: 6px;
+  }
+
+  /* ── CTA ── */
+  .cta-bar {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    padding: 12px 16px;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+    background: linear-gradient(180deg, transparent 0%, var(--bg-base) 30%);
+  }
+  .cta-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--yellow) 0%, #ff9500 100%);
+    color: #000;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="logo">MYBC</div>
+  <div class="back-btn">&larr;</div>
+</div>
+
+<!-- Hero -->
+<div class="vip-hero">
+  <div class="vip-hero-icon">&#9733;</div>
+  <h1>VIP CLUB</h1>
+  <p>Play more, earn more. Climb the tiers and unlock exclusive rewards, cashback, and personalized bonuses.</p>
+</div>
+
+<!-- Current Progress -->
+<div class="section">
+  <div class="section-title">Your Progress</div>
+  <div class="current-tier-card">
+    <div class="tier-badge tier-bronze">
+      <span class="dot">&#9733;</span>
+      Bronze
+    </div>
+    <div class="progress-info">
+      <span>Next tier: Silver</span>
+      <strong>2,340 / 5,000 XP</strong>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" style="width: 46.8%"></div>
+    </div>
+    <div class="progress-label">
+      Earn <strong>2,660 XP</strong> more to reach Silver
+    </div>
+  </div>
+</div>
+
+<!-- VIP Tiers Table -->
+<div class="section">
+  <div class="section-title">VIP Tiers</div>
+  <div style="overflow-x: auto; border-radius: var(--radius-md);">
+    <table class="tier-table">
+      <thead>
+        <tr>
+          <th>Tier</th>
+          <th>XP Required</th>
+          <th>Cashback</th>
+          <th>Bonus</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="active-row">
+          <td>
+            <div class="tier-name">
+              <span class="tier-dot" style="background:#cd7f32"></span>
+              Bronze
+              <span class="active-tag">You</span>
+            </div>
+          </td>
+          <td>0</td>
+          <td>5%</td>
+          <td>100%</td>
+        </tr>
+        <tr>
+          <td><div class="tier-name"><span class="tier-dot" style="background:#c0c0c0"></span> Silver</div></td>
+          <td>5,000</td>
+          <td>8%</td>
+          <td>150%</td>
+        </tr>
+        <tr>
+          <td><div class="tier-name"><span class="tier-dot" style="background:#ffd700"></span> Gold</div></td>
+          <td>25,000</td>
+          <td>12%</td>
+          <td>200%</td>
+        </tr>
+        <tr>
+          <td><div class="tier-name"><span class="tier-dot" style="background:#e5e4e2"></span> Platinum</div></td>
+          <td>100,000</td>
+          <td>15%</td>
+          <td>300%</td>
+        </tr>
+        <tr>
+          <td><div class="tier-name"><span class="tier-dot" style="background:linear-gradient(135deg,#38bdf8,#9b7aff)"></span> Diamond</div></td>
+          <td>500,000</td>
+          <td>20%</td>
+          <td>500%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Benefits -->
+<div class="section">
+  <div class="section-title">VIP Benefits</div>
+  <div class="benefits-grid">
+    <div class="benefit-card">
+      <div class="benefit-icon blue">&#x2191;</div>
+      <h4>Higher Limits</h4>
+      <p>Increased deposit & withdrawal limits</p>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon green">&#x21BA;</div>
+      <h4>Cashback</h4>
+      <p>Weekly cashback on net losses</p>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon purple">&#9733;</div>
+      <h4>Exclusive Bonuses</h4>
+      <p>Personalized offers & free spins</p>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon yellow">&#9742;</div>
+      <h4>VIP Manager</h4>
+      <p>Dedicated account manager</p>
+    </div>
+  </div>
+</div>
+
+<!-- How It Works -->
+<div class="section">
+  <div class="section-title">How It Works</div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text">
+        <h4>Play Games</h4>
+        <p>Every bet you place earns XP points. Casino and sports bets both count.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text">
+        <h4>Climb Tiers</h4>
+        <p>Accumulate XP to move up through Bronze, Silver, Gold, Platinum, and Diamond.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text">
+        <h4>Unlock Rewards</h4>
+        <p>Each tier unlocks better cashback rates, higher bonuses, and exclusive perks.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Rules -->
+<div class="section">
+  <div class="section-title">Rules & Terms</div>
+  <ul class="rules-list">
+    <li><span class="bullet"></span> XP is earned from real-money wagers only. Bonus bets do not count toward XP.</li>
+    <li><span class="bullet"></span> VIP tier is evaluated monthly. Maintain minimum activity to keep your tier.</li>
+    <li><span class="bullet"></span> Cashback is calculated on net losses and credited every Monday.</li>
+    <li><span class="bullet"></span> Bonus multipliers apply to deposit bonuses. Wagering requirements may vary by tier.</li>
+    <li><span class="bullet"></span> MYBC reserves the right to modify the VIP program at any time.</li>
+    <li><span class="bullet"></span> Diamond tier includes invitation to exclusive events and personalized gifts.</li>
+  </ul>
+</div>
+
+<!-- CTA -->
+<div class="cta-bar">
+  <button class="cta-btn">Start Playing & Earn XP</button>
+</div>
+
+</body>
+</html>
